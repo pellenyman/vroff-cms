@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { fallbackImages } from "@/lib/images";
 
 export default function FeatureBlock({ blok }: { blok: any }) {
   const items = blok.items || [];
@@ -51,9 +52,7 @@ export default function FeatureBlock({ blok }: { blok: any }) {
                 className={`shrink-0 w-[calc(100vw-48px)] md:w-[500px] flex flex-col transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
                 <div className="h-[280px] md:h-[380px] rounded-[10px] overflow-hidden relative"
                   style={item.background_color ? { backgroundColor: item.background_color } : undefined}>
-                  {item.image?.filename && (
-                    <img src={item.image.filename} alt={item.title} className="w-full h-full object-cover" draggable={false} />
-                  )}
+                  <img src={item.image?.filename || [fallbackImages.feature1, fallbackImages.feature2, fallbackImages.feature3][i % 3]} alt={item.title} className="w-full h-full object-cover" draggable={false} />
                 </div>
                 <div className="pt-[30px] pr-[40px] md:pr-[120px]">
                   <h3 className="text-[#5d0f0f] text-[24px] md:text-[32px] font-semibold tracking-[-0.64px]">{item.title}</h3>

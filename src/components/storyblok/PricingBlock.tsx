@@ -13,7 +13,7 @@ export default function PricingBlock({ blok }: { blok: any }) {
   const [selected, setSelected] = useState(0);
 
   return (
-    <section id="v2-pricing" className="bg-[#d7dbfe] w-full py-[100px] md:py-[150px] px-6 md:px-[120px]">
+    <section id="pricing" className="bg-[#d7dbfe] w-full py-[100px] md:py-[150px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[50px]">
         <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{blok.headline || "Pris"}</h2>
         <div className="flex flex-col md:flex-row gap-[30px] items-stretch">

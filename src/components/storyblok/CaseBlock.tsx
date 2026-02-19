@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { fallbackImages } from "@/lib/images";
 
 export default function CaseBlock({ blok }: { blok: any }) {
   const items = blok.items || [];
@@ -27,7 +28,7 @@ export default function CaseBlock({ blok }: { blok: any }) {
   };
 
   return (
-    <section className="bg-[#ede1c9] w-full py-[100px] px-6 md:px-[120px]">
+    <section id="cases" className="bg-[#ede1c9] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[51px]">
         <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{blok.headline || "Case"}</h2>
         <div className="overflow-hidden cursor-grab active:cursor-grabbing" onPointerDown={onPointerDown} onPointerUp={onPointerUp} style={{ touchAction: "pan-y" }}>
@@ -37,7 +38,7 @@ export default function CaseBlock({ blok }: { blok: any }) {
                 className={`shrink-0 bg-[#b4bbfd] rounded-[10px] p-[24px] md:p-[55px] w-[calc(100vw-48px)] md:w-[918px] transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
                 <div className="flex flex-col md:flex-row md:justify-between w-full gap-[24px] md:gap-0 md:h-[390px]">
                   <div className="w-full h-[220px] md:h-full md:w-[390px] rounded-[10px] overflow-hidden shrink-0 md:order-2">
-                    {c.image?.filename && <img src={c.image.filename} alt={c.name} className="w-full h-full object-cover" draggable={false} />}
+                    <img src={c.image?.filename || fallbackImages.case1} alt={c.name} className="w-full h-full object-cover" draggable={false} />
                   </div>
                   <div className="flex flex-col justify-between md:order-1 gap-[20px]">
                     <div>

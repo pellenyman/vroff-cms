@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { fallbackImages } from "@/lib/images";
 
 export default function TestimonialBlock({ blok }: { blok: any }) {
   const items = blok.items || [];
@@ -43,7 +44,7 @@ export default function TestimonialBlock({ blok }: { blok: any }) {
                 className={`shrink-0 w-[calc(100vw-48px)] md:w-[330px] bg-[#e8eaff] rounded-[10px] p-[35px] flex flex-col gap-[23px] justify-between transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
                 <p className="text-[#5d0f0f] text-[20px] font-medium leading-[1.5] flex-1">"{t.quote}"</p>
                 <div className="flex items-center gap-[16px]">
-                  {t.avatar?.filename && <img src={t.avatar.filename} alt={t.name} className="w-[48px] h-[48px] rounded-full object-cover" />}
+                  <img src={t.avatar?.filename || fallbackImages.avatar} alt={t.name} className="w-[48px] h-[48px] rounded-full object-cover" />
                   <div>
                     <p className="text-[#5d0f0f] text-[16px] font-bold">{t.name}</p>
                     <p className="text-[#5d0f0f] text-[14px] font-medium">{t.role}</p>

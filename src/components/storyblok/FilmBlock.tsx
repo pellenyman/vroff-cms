@@ -34,7 +34,7 @@ export default function FilmBlock({ blok }: { blok: any }) {
   };
 
   return (
-    <section className="bg-[#ede1c9] w-full py-[100px] flex justify-center px-6">
+    <section id="film" className="bg-[#ede1c9] w-full py-[100px] flex justify-center px-6">
       <div className="relative w-full max-w-[1152px] rounded-[10px] overflow-hidden cursor-pointer group"
         onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)} onClick={togglePlay}>
         <div className="relative w-full h-[400px] md:h-[709px]">
