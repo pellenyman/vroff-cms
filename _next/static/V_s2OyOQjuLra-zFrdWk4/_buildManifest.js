@@ -1,7 +1,12 @@
 self.__BUILD_MANIFEST = {
   "__rewrites": {
     "afterFiles": [],
-    "beforeFiles": [],
+    "beforeFiles": [
+      {
+        "source": "/vroff-cms//_next/:path+",
+        "destination": "/vroff-cms/_next/:path+"
+      }
+    ],
     "fallback": []
   },
   "sortedPages": [
