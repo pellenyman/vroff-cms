@@ -17,6 +17,9 @@ const imgSec3 = `${BASE}/assets/5281ab6aa0636038040ed64dad74e65a1211041f.png`;
 const imgFilm = `${BASE}/assets/1f0e5946b884ef95fa586fc7af2e5bdca32525e7.png`;
 const imgCase = `${BASE}/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png`;
 
+const fallbackFeatureImgs = [imgFeature1, imgFeature2, imgFeature3];
+const fallbackSecImgs = [imgSec1, imgSec2, imgSec3];
+
 interface V2PageProps {
   onOpenModal: () => void;
   cmsData?: any[] | null;
@@ -47,7 +50,6 @@ function VroffLogoLarge({ className }: { className?: string }) {
   );
 }
 
-/* ─── Arrow icon ─── */
 function ArrowIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 50 50">
@@ -57,7 +59,6 @@ function ArrowIcon({ className }: { className?: string }) {
   );
 }
 
-/* ─── Play icon ─── */
 function PlayIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 46.875 46.875">
@@ -67,18 +68,14 @@ function PlayIcon({ className }: { className?: string }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   HEADER
+   HEADER – reads nav items from CMS
    ═══════════════════════════════════════════════════ */
-function V2Header({ onOpenModal, scrolled }: { onOpenModal: () => void; scrolled: boolean }) {
+function V2Header({ onOpenModal, scrolled, cms }: { onOpenModal: () => void; scrolled: boolean; cms?: any }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const allNavItems = [
-    { label: "Pris", href: "#pricing" },
-    { label: "Kundcase", href: "/case" },
-    { label: "__logo__", href: "#" },
-    { label: "FAQ", href: "/faq" },
-    { label: "Kontakt", href: "/contact" },
-  ];
+  const navItems = cms?.items?.length
+    ? cms.items.map((n: any) => ({ label: n.label, href: n.href }))
+    : [];
 
   const scrollTo = (href: string) => {
     setMenuOpen(false);
@@ -87,6 +84,12 @@ function V2Header({ onOpenModal, scrolled }: { onOpenModal: () => void; scrolled
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const allNavItems = [
+    ...navItems.slice(0, 2),
+    { label: "__logo__", href: "#" },
+    ...navItems.slice(2),
+  ];
 
   return (
     <div className="sticky top-0 z-50 w-full flex justify-center pt-4 pointer-events-none px-4 md:px-0">
@@ -100,18 +103,13 @@ function V2Header({ onOpenModal, scrolled }: { onOpenModal: () => void; scrolled
       >
         {menuOpen ? (
           <>
-            {/* Mobile: vertical nav with logo on top */}
             <div className="flex md:hidden flex-col items-center w-full py-4 gap-2">
               <button type="button" onClick={() => scrollTo("#")} className="cursor-pointer p-3">
                 <VroffLogo className="w-[86px] h-[25.8px] text-[#5d0f0f]" />
               </button>
-              {allNavItems.filter(n => n.label !== "__logo__").map((item) => (
-                <button
-                  key={item.label}
-                  type="button"
-                  onClick={() => scrollTo(item.href)}
-                  className="w-full text-center py-3 text-[#5d0f0f] text-[16px] font-semibold cursor-pointer hover:bg-[#5d0f0f]/5 transition-colors rounded-[10px]"
-                >
+              {allNavItems.filter(n => n.label !== "__logo__").map((item: any) => (
+                <button key={item.label} type="button" onClick={() => scrollTo(item.href)}
+                  className="w-full text-center py-3 text-[#5d0f0f] text-[16px] font-semibold cursor-pointer hover:bg-[#5d0f0f]/5 transition-colors rounded-[10px]">
                   {item.label}
                 </button>
               ))}
@@ -119,10 +117,8 @@ function V2Header({ onOpenModal, scrolled }: { onOpenModal: () => void; scrolled
                 Stäng
               </button>
             </div>
-
-            {/* Desktop: horizontal nav */}
             <div className="hidden md:flex items-center gap-[15px] h-[70px]">
-              {allNavItems.map((item) =>
+              {allNavItems.map((item: any) =>
                 item.label === "__logo__" ? (
                   <button key="logo" type="button" onClick={() => scrollTo("#")} className="cursor-pointer shrink-0 p-[14px] flex items-center justify-center">
                     <VroffLogo className="w-[86px] h-[25.8px] text-[#5d0f0f]" />
@@ -155,21 +151,21 @@ function V2Header({ onOpenModal, scrolled }: { onOpenModal: () => void; scrolled
 }
 
 /* ═══════════════════════════════════════════════════
-   HERO
+   HERO – fully CMS-driven
    ═══════════════════════════════════════════════════ */
-function V2Hero({ onOpenModal, cms }: { onOpenModal: () => void; cms?: any }) {
+function V2Hero({ onOpenModal, cms }: { onOpenModal: () => void; cms: any }) {
   return (
     <section className="relative w-full h-[700px] md:h-[800px] flex items-center justify-center overflow-hidden -mt-[90px]">
       <img src={cms?.background_image?.filename || imgHero} alt="Vroff hero" className="absolute inset-0 w-full h-full object-cover" />
       <div className="relative z-10 flex flex-col items-center gap-[30px] pt-[80px] text-center px-6">
         <h1 className="text-[#fafafa] text-[40px] md:text-[76px] font-semibold leading-[1.01] tracking-[-2px] md:tracking-[-3.8px] max-w-[759px]">
-          {cms?.headline || "Vroff är det nya mänskligare sättet att samarbeta"}
+          {cms?.headline}
         </h1>
         <p className="text-white text-[16px] md:text-[20px] max-w-[600px]">
-          {cms?.subtext || "Lorem ipsum dolor Esse ipsam incidunt eligendi veroihil utsit amet, onsectetur adipiscing elit."}
+          {cms?.subtext}
         </p>
         <button type="button" onClick={onOpenModal} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] cursor-pointer hover:bg-[#5664e2] transition-colors">
-          Prova på
+          {cms?.cta_text}
         </button>
       </div>
     </section>
@@ -177,19 +173,16 @@ function V2Hero({ onOpenModal, cms }: { onOpenModal: () => void; cms?: any }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   FEATURES - carousel
+   FEATURES – fully CMS-driven carousel
    ═══════════════════════════════════════════════════ */
-const featureData = [
-  { title: "Allt på ett ställe", img: imgFeature1, desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod.", bg: undefined, imgClass: "w-full h-full object-cover" },
-  { title: "Kalendar", img: imgFeature2, desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod. Fuga veritatis eligendi unde ut.", bg: "#b4bbfd", imgClass: "absolute bottom-0 right-0 w-[95%] h-[86%] object-cover" },
-  { title: "Allt på ett ställe", img: imgFeature3, desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod. Fuga veritatis eligendi unde ut.", bg: undefined, imgClass: "w-full h-full object-cover" },
-];
-
-function V2Features({ cms }: { cms?: any }) {
-  const fallbackImgs = [imgFeature1, imgFeature2, imgFeature3];
-  const items = cms?.items?.length
-    ? cms.items.map((it: any, i: number) => ({ title: it.title, desc: it.description, img: it.image?.filename || fallbackImgs[i % 3], bg: it.background_color || undefined, imgClass: it.background_color ? "absolute bottom-0 right-0 w-[95%] h-[86%] object-cover" : "w-full h-full object-cover" }))
-    : featureData;
+function V2Features({ cms }: { cms: any }) {
+  const items = (cms?.items || []).map((it: any, i: number) => ({
+    title: it.title,
+    desc: it.description,
+    img: it.image?.filename || fallbackFeatureImgs[i % 3],
+    bg: it.background_color || undefined,
+    imgClass: it.background_color ? "absolute bottom-0 right-0 w-[95%] h-[86%] object-cover" : "w-full h-full object-cover",
+  }));
   const [slide, setSlide] = useState(0);
   const dragRef = useRef<{ x: number } | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -211,12 +204,14 @@ function V2Features({ cms }: { cms?: any }) {
     if (Math.abs(dx) > 40) setSlide((p) => Math.max(0, Math.min(maxSlide, p + (dx > 0 ? -1 : 1))));
   };
 
+  if (!items.length) return null;
+
   return (
     <section className="bg-[#f5efdf] w-full py-[100px] md:py-[150px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[65px]">
         <div>
-          <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Detta är Vroff"}</h2>
-          <p className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px]">Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod. Fuga veritatis eligendi unde ut.</p>
+          <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
+          <p className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px]">{cms?.description}</p>
         </div>
 
         <div className="overflow-hidden cursor-grab active:cursor-grabbing"
@@ -253,19 +248,15 @@ function V2Features({ cms }: { cms?: any }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   TESTIMONIALS - carousel with swipe
+   TESTIMONIALS – fully CMS-driven carousel
    ═══════════════════════════════════════════════════ */
-const testimonialData = [
-  { quote: '"Totam unde adipisci eius dolor quam adipisci aut ut aliquam est perspiciatis et. Molestiae qui sequi labore et asper."', name: "Helen Hansson", role: "Rolebeskrivning" },
-  { quote: '"Detta verktyg har revolutionerat vårt sätt att arbeta. Teamet älskar hur enkelt det är."', name: "Erik Svensson", role: "Product Manager" },
-  { quote: '"Enkelt att komma igång och supportsystemet är förstklassigt."', name: "Anna Karlsson", role: "CEO" },
-  { quote: '"Vi har testat många lösningar men denna är överlägsen."', name: "Maria Andersson", role: "Team Lead" },
-];
-
-function V2Testimonials({ cms }: { cms?: any }) {
-  const tItems = cms?.items?.length
-    ? cms.items.map((t: any) => ({ quote: t.quote, name: t.name, role: t.role, image: t.avatar?.filename || imgAvatar }))
-    : testimonialData;
+function V2Testimonials({ cms }: { cms: any }) {
+  const tItems = (cms?.items || []).map((t: any) => ({
+    quote: t.quote,
+    name: t.name,
+    role: t.role,
+    image: t.avatar?.filename || imgAvatar,
+  }));
   const [slide, setSlide] = useState(0);
   const dragRef = useRef<{ x: number } | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -287,17 +278,19 @@ function V2Testimonials({ cms }: { cms?: any }) {
     if (Math.abs(dx) > 40) setSlide((p) => Math.max(0, Math.min(maxSlide, p + (dx > 0 ? -1 : 1))));
   };
 
+  if (!tItems.length) return null;
+
   return (
     <section className="bg-[#fafafa] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1440px] mx-auto flex flex-col gap-[50px]">
-        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Vad folk säger"}</h2>
+        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
         <div className="overflow-hidden cursor-grab active:cursor-grabbing" onPointerDown={onPointerDown} onPointerUp={onPointerUp} style={{ touchAction: "pan-y" }}>
           <div ref={trackRef} className="flex gap-[40px] transition-transform duration-500 ease-out select-none" style={{ transform: `translateX(${-slide * step}px)` }}>
             {tItems.map((t: any, i: number) => (
               <div key={i} onClick={() => setSlide(Math.max(0, Math.min(maxSlide, i)))} className={`shrink-0 w-[calc(100vw-48px)] md:w-[330px] bg-[#e8eaff] rounded-[10px] p-[35px] flex flex-col gap-[23px] justify-between transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
                 <p className="text-[#5d0f0f] text-[20px] font-medium leading-[1.5] flex-1">{t.quote}</p>
                 <div className="flex items-center gap-[16px]">
-                  <img src={imgAvatar} alt={t.name} className="w-[48px] h-[48px] rounded-full object-cover" />
+                  <img src={t.image} alt={t.name} className="w-[48px] h-[48px] rounded-full object-cover" />
                   <div>
                     <p className="text-[#5d0f0f] text-[16px] font-bold">{t.name}</p>
                     <p className="text-[#5d0f0f] text-[14px] font-medium">{t.role}</p>
@@ -317,25 +310,23 @@ function V2Testimonials({ cms }: { cms?: any }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   SECURITY
+   SECURITY – fully CMS-driven
    ═══════════════════════════════════════════════════ */
-const securityData = [
-  { title: "Krypterat", desc: "Självklart är Vroff fullt krypterat (AES). Ingen annan än dina medarbetare kan komma åt datan.", img: imgSec1 },
-  { title: "Oberoende", desc: "Atque corporis maxime debitis modi vero aliquid. Consequatur voluptas quos atque minima omnis.", img: imgSec2 },
-  { title: "Svenskt", desc: "Vroff utvecklas och driftas i Sverige och omfattas av GDPR, DORA, NIS2 och övriga EU regelverk.", img: imgSec3 },
-];
+function V2Security({ cms }: { cms: any }) {
+  const sItems = (cms?.items || []).map((s: any, i: number) => ({
+    title: s.title,
+    desc: s.description,
+    img: s.image?.filename || fallbackSecImgs[i % 3],
+  }));
 
-function V2Security({ cms }: { cms?: any }) {
-  const fallbackSecImgs = [imgSec1, imgSec2, imgSec3];
-  const sItems = cms?.items?.length
-    ? cms.items.map((s: any, i: number) => ({ title: s.title, desc: s.description, img: s.image?.filename || fallbackSecImgs[i % 3] }))
-    : securityData;
+  if (!sItems.length) return null;
+
   return (
     <section id="v2-security" className="bg-[#3b0101] w-full py-[100px] md:py-[150px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[50px]">
         <div>
-          <h2 className="text-[#ac4324] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">Säkerhet</h2>
-          <p className="text-[#c15333] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px]">Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod.</p>
+          <h2 className="text-[#ac4324] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
+          <p className="text-[#c15333] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px]">{cms?.description}</p>
         </div>
         <div className="flex flex-col md:flex-row gap-[30px]">
           {sItems.map((s: any, i: number) => (
@@ -356,13 +347,17 @@ function V2Security({ cms }: { cms?: any }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   FILM - with play button pulse
+   FILM – CMS-driven video player
    ═══════════════════════════════════════════════════ */
-function V2Film() {
+function V2Film({ cms }: { cms: any }) {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [hovering, setHovering] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const duration = cms?.duration || "4:13";
+  const [durMin, durSec] = duration.split(":").map(Number);
+  const totalSec = durMin * 60 + durSec;
 
   const togglePlay = () => {
     if (playing) {
@@ -371,7 +366,6 @@ function V2Film() {
       setPlaying(false);
     } else {
       setPlaying(true);
-      const start = progress >= 100 ? 0 : progress;
       if (progress >= 100) setProgress(0);
       timerRef.current = setInterval(() => {
         setProgress((p) => {
@@ -392,7 +386,6 @@ function V2Film() {
   }, []);
 
   const formatTime = (pct: number) => {
-    const totalSec = 253; // 4:13
     const current = Math.floor((pct / 100) * totalSec);
     const min = Math.floor(current / 60);
     const sec = current % 60;
@@ -407,14 +400,9 @@ function V2Film() {
         onMouseLeave={() => setHovering(false)}
         onClick={togglePlay}
       >
-        {/* Thumbnail */}
         <div className="relative w-full h-[400px] md:h-[709px]">
-          <img src={imgFilm} alt="Demo film" className="absolute inset-0 w-full h-full object-cover" />
-
-          {/* Dark overlay – stronger when paused */}
+          <img src={cms?.thumbnail?.filename || imgFilm} alt={cms?.title} className="absolute inset-0 w-full h-full object-cover" />
           <div className={`absolute inset-0 transition-colors duration-300 ${playing ? "bg-black/5" : hovering ? "bg-black/30" : "bg-black/15"}`} />
-
-          {/* Center play/pause indicator */}
           {!playing && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className={`w-[80px] h-[80px] md:w-[100px] md:h-[100px] bg-white/90 rounded-full flex items-center justify-center transition-transform duration-300 ${hovering ? "scale-110" : "scale-100"}`}>
@@ -422,8 +410,6 @@ function V2Film() {
               </div>
             </div>
           )}
-
-          {/* Pause icon when playing and hovering */}
           {playing && hovering && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] bg-white/80 rounded-full flex items-center justify-center gap-[8px]">
@@ -434,9 +420,7 @@ function V2Film() {
           )}
         </div>
 
-        {/* Controls bar */}
         <div className="bg-[#1a1a1a] px-[20px] md:px-[35px] py-[16px] flex items-center gap-[16px]">
-          {/* Play/Pause button */}
           <button type="button" onClick={(e) => { e.stopPropagation(); togglePlay(); }} className="shrink-0 cursor-pointer">
             {playing ? (
               <div className="flex items-center gap-[4px]">
@@ -447,11 +431,7 @@ function V2Film() {
               <PlayIcon className="w-[20px] h-[20px] text-[#fafafa]" />
             )}
           </button>
-
-          {/* Time */}
           <span className="text-[#fafafa] text-[14px] font-medium shrink-0 w-[40px]">{formatTime(progress)}</span>
-
-          {/* Progress bar */}
           <div className="flex-1 h-[4px] bg-white/20 rounded-full overflow-hidden cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
@@ -461,11 +441,7 @@ function V2Film() {
             }}>
             <div className="h-full bg-[#6674f2] rounded-full transition-[width] duration-100" style={{ width: `${progress}%` }} />
           </div>
-
-          {/* Duration */}
-          <span className="text-[#fafafa]/60 text-[14px] font-medium shrink-0">4:13</span>
-
-          {/* Fullscreen icon placeholder */}
+          <span className="text-[#fafafa]/60 text-[14px] font-medium shrink-0">{duration}</span>
           <button type="button" onClick={(e) => e.stopPropagation()} className="shrink-0 cursor-pointer text-[#fafafa]/60 hover:text-[#fafafa] transition-colors">
             <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
               <path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -478,66 +454,55 @@ function V2Film() {
 }
 
 /* ═══════════════════════════════════════════════════
-   GET STARTED - interactive stepper
+   GET STARTED – fully CMS-driven stepper
    ═══════════════════════════════════════════════════ */
-const steps = [
-  { label: "Ladda ned", mockTitle: "Ladda ned Vroff", mockContent: "Välj din plattform och ladda ned appen. Finns för Mac, Windows, iOS och Android." },
-  { label: "Skapa konto", mockTitle: "Skapa ditt konto", mockContent: "Fyll i namn och e-post. Du får en bekräftelse direkt." },
-  { label: "Bjuder in andra", mockTitle: "Bjud in ditt team", mockContent: "Lägg till kollegor med e-post. De får en inbjudan inom sekunder." },
-  { label: "Öppna rummet", mockTitle: "Öppna ert första rum", mockContent: "Skapa ett rum, ge det ett namn, och börja samarbeta direkt." },
-  { label: "Nu är du igång :-)", mockTitle: "Klart!", mockContent: "Du och ditt team är nu redo att samarbeta på ett mänskligare sätt." },
-];
-
-function V2GetStarted({ cms }: { cms?: any }) {
-  const stepsData = cms?.steps?.length
-    ? cms.steps.map((s: any) => ({ label: s.label, mockTitle: s.title, mockContent: s.content }))
-    : steps;
+function V2GetStarted({ cms }: { cms: any }) {
+  const stepsData = (cms?.steps || []).map((s: any) => ({
+    label: s.label,
+    mockTitle: s.title,
+    mockContent: s.content,
+  }));
   const [activeStep, setActiveStep] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || !stepsData.length) return;
     timerRef.current = setInterval(() => {
       setActiveStep((p) => (p + 1) % stepsData.length);
     }, 4000);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [paused, activeStep]);
+  }, [paused, activeStep, stepsData.length]);
+
+  if (!stepsData.length) return null;
 
   return (
     <section className="bg-[#b4bbfd] w-full py-[100px] md:py-[150px] px-6 md:px-[120px] overflow-hidden">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[60px] md:gap-[104px]">
-        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Komma igång på 30 sekunder"}</h2>
+        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
 
         <div className="flex flex-col md:flex-row gap-[40px] md:gap-[64px]"
           onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-          {/* Step list */}
           <div className="bg-[#d7dbfe] rounded-[10px] py-[25px] w-full md:w-[330px] shrink-0">
             {stepsData.map((s: any, i: number) => (
-              <button
-                key={i}
-                type="button"
+              <button key={i} type="button"
                 onClick={() => { setActiveStep(i); setPaused(true); }}
                 className={`w-full text-left px-[30px] py-[16px] text-[20px] font-semibold tracking-[-0.4px] text-[#5d0f0f] cursor-pointer transition-colors duration-200 ${
                   i === activeStep ? "bg-[#e6e8fc]" : "hover:bg-[#e6e8fc]/50"
-                }`}
-              >
+                }`}>
                 {s.label}
               </button>
             ))}
           </div>
 
-          {/* Demo area – röd skala, vit kontrast */}
           <div className="bg-[#3b0101] rounded-[10px] flex-1 p-[33px] md:p-[40px] min-h-[400px] md:min-h-[533px] flex flex-col justify-between">
             <div className="flex flex-col gap-[20px]" key={activeStep}>
-              {/* Step icon */}
               <div className="bg-[#5d0f0f] w-[33px] h-[33px] rounded-[10px] flex items-center justify-center">
                 <span className="text-white text-[16px] font-bold">{activeStep + 1}</span>
               </div>
               <h3 className="text-white text-[24px] md:text-[32px] font-semibold tracking-[-0.64px] animate-[slideInRight_0.35s_ease-out]">{stepsData[activeStep].mockTitle}</h3>
               <p className="text-[#e0d1b4] text-[16px] md:text-[18px] font-medium leading-[1.5] max-w-[500px] animate-[slideInRight_0.35s_ease-out]">{stepsData[activeStep].mockContent}</p>
 
-              {/* Step 0: Download – platform buttons */}
               {activeStep === 0 && (
                 <div className="flex flex-wrap gap-3 mt-4 animate-[slideInRight_0.4s_ease-out]">
                   {["macOS", "Windows", "iOS", "Android"].map((p) => (
@@ -549,7 +514,6 @@ function V2GetStarted({ cms }: { cms?: any }) {
                 </div>
               )}
 
-              {/* Step 1: Create account – form fields */}
               {activeStep === 1 && (
                 <div className="flex flex-col gap-3 mt-4 animate-[slideInRight_0.4s_ease-out]">
                   <div className="bg-[#5d0f0f] border border-[#822727] rounded-[10px] px-4 py-3">
@@ -564,7 +528,6 @@ function V2GetStarted({ cms }: { cms?: any }) {
                 </div>
               )}
 
-              {/* Step 2: Invite – contact list */}
               {activeStep === 2 && (
                 <div className="flex flex-col gap-3 mt-4 animate-[slideInRight_0.4s_ease-out]">
                   {[
@@ -594,7 +557,6 @@ function V2GetStarted({ cms }: { cms?: any }) {
                 </div>
               )}
 
-              {/* Step 3: Open room – room preview */}
               {activeStep === 3 && (
                 <div className="mt-4 animate-[slideInRight_0.4s_ease-out]">
                   <div className="bg-[#5d0f0f] border border-[#822727] rounded-[10px] p-5">
@@ -627,7 +589,6 @@ function V2GetStarted({ cms }: { cms?: any }) {
                 </div>
               )}
 
-              {/* Step 4: Done – success */}
               {activeStep === 4 && (
                 <div className="mt-6 flex flex-col items-center gap-4 animate-[slideInRight_0.4s_ease-out]">
                   <div className="w-[80px] h-[80px] rounded-full border-[3px] border-white flex items-center justify-center">
@@ -640,14 +601,12 @@ function V2GetStarted({ cms }: { cms?: any }) {
               )}
             </div>
 
-            {/* Progress – röd skala */}
             <div className="mt-8 bg-[#5d0f0f] rounded-[10px] h-[8px] overflow-hidden">
               <div className="h-full bg-[#9b3316] rounded-[10px] transition-all duration-300" style={{ width: `${((activeStep + 1) / stepsData.length) * 100}%` }} />
             </div>
           </div>
         </div>
 
-        {/* Dot indicators – röd skala */}
         <div className="flex items-center justify-center gap-[25px]">
           {stepsData.map((_: any, i: number) => (
             <button key={i} type="button" onClick={() => setActiveStep(i)}
@@ -660,89 +619,42 @@ function V2GetStarted({ cms }: { cms?: any }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   PRICING - selectable cards
+   PRICING – fully CMS-driven
    ═══════════════════════════════════════════════════ */
-interface V2Feature {
-  name: string;
-  included: boolean;
-}
-
-const v2PricingTiers = [
-  {
-    name: "Free", sub: "Prova", price: "0 SEK", priceSub: "Gratis för alla",
-    desc: "Perfekt för att testa och komma igång.",
-    features: [
-      { name: "5 användare", included: true },
-      { name: "10 GB lagring", included: true },
-      { name: "Grundläggande support", included: true },
-      { name: "Mobil app", included: true },
-      { name: "Videomöten 30 min", included: true },
-      { name: "Realtidsredigering", included: false },
-      { name: "API-åtkomst", included: false },
-    ] as V2Feature[],
-  },
-  {
-    name: "Pro", sub: "Vardags användning", price: "10 SEK", priceSub: "Per månad med årsrabatt.",
-    desc: "För växande team som behöver mer kraft.",
-    features: [
-      { name: "25 användare", included: true },
-      { name: "100 GB lagring", included: true },
-      { name: "Prioriterad support", included: true },
-      { name: "Mobil app", included: true },
-      { name: "Videomöten 2 timmar", included: true },
-      { name: "Realtidsredigering", included: true },
-      { name: "API-åtkomst", included: false },
-    ] as V2Feature[],
-  },
-  {
-    name: "Max", sub: "Allt vi har plus mer", price: "20 SEK", priceSub: "Per månad per person",
-    desc: "Fullständig lösning för större organisationer.",
-    features: [
-      { name: "Obegränsat användare", included: true },
-      { name: "1 TB lagring", included: true },
-      { name: "Dedikerad support", included: true },
-      { name: "Mobil app", included: true },
-      { name: "Obegränsade videomöten", included: true },
-      { name: "Realtidsredigering", included: true },
-      { name: "API-åtkomst", included: true },
-    ] as V2Feature[],
-  },
-];
-
-function V2Pricing({ onOpenModal }: { onOpenModal: () => void }) {
+function V2Pricing({ onOpenModal, cms }: { onOpenModal: () => void; cms: any }) {
+  const tiers = (cms?.tiers || []).map((t: any) => ({
+    name: t.name,
+    sub: t.sub,
+    price: t.price,
+    priceSub: t.price_sub,
+    desc: t.desc,
+    features: (t.features || []).map((f: any) => ({ name: f.name, included: f.included })),
+  }));
   const [selected, setSelected] = useState(0);
   const [showComparison, setShowComparison] = useState(false);
+
+  if (!tiers.length) return null;
 
   return (
     <>
       <section id="v2-pricing" className="bg-[#d7dbfe] w-full py-[100px] md:py-[150px] px-6 md:px-[120px]">
         <div className="max-w-[1200px] mx-auto flex flex-col gap-[50px]">
-          <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">Pris</h2>
+          <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
           <div className="flex flex-col md:flex-row gap-[30px] items-stretch">
-            {v2PricingTiers.map((p, i) => (
-              <div
-                key={i}
-                onClick={() => setSelected(i)}
+            {tiers.map((p: any, i: number) => (
+              <div key={i} onClick={() => setSelected(i)}
                 className={`bg-[#e6e8fc] rounded-[10px] p-[35px] flex flex-col flex-1 cursor-pointer transition-all duration-200 ${
                   selected === i ? "ring-2 ring-[#5d0f0f]" : "hover:ring-1 hover:ring-[#b4bbfd]"
-                }`}
-              >
-                {/* Header */}
+                }`}>
                 <div>
                   <h3 className="text-[#5d0f0f] text-[26px] font-semibold tracking-[-0.52px]">{p.name}</h3>
                   <p className="text-[#5d0f0f] text-[16px] font-medium">{p.sub}</p>
                 </div>
-
-                {/* Price */}
                 <div className="mt-[29px]">
                   <p className="text-[#5d0f0f] text-[22px] font-semibold tracking-[-0.44px]">{p.price}</p>
                   <p className="text-[#5d0f0f]/60 text-[14px] font-medium leading-[1.4]">{p.priceSub}</p>
                 </div>
-
-                {/* Description */}
                 <p className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4">{p.desc}</p>
-
-                {/* CTA */}
                 <button type="button" onClick={(e) => { e.stopPropagation(); onOpenModal(); }}
                   className={`mt-6 font-semibold text-[16px] rounded-[10px] h-[40px] w-full flex items-center justify-center cursor-pointer transition-colors ${
                     selected === i
@@ -751,13 +663,9 @@ function V2Pricing({ onOpenModal }: { onOpenModal: () => void }) {
                   }`}>
                   {selected === i ? "Vald" : "Prova på"}
                 </button>
-
-                {/* Divider */}
                 <div className="border-t border-[#d7dbfe] mt-6" />
-
-                {/* Features with check/dash */}
                 <div className="flex flex-col gap-[12px] mt-6">
-                  {p.features.map((f, j) => (
+                  {p.features.map((f: any, j: number) => (
                     <div key={j} className="flex items-start gap-2">
                       {f.included ? (
                         <span className="text-[#5d0f0f] text-[14px] mt-[1px]">&#10003;</span>
@@ -771,52 +679,40 @@ function V2Pricing({ onOpenModal }: { onOpenModal: () => void }) {
               </div>
             ))}
           </div>
-
-          {/* Compare button */}
-          <button
-            type="button"
-            onClick={() => setShowComparison(true)}
-            className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-2 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors"
-          >
-            Se fullständig prisjämförelse
+          <button type="button" onClick={() => setShowComparison(true)}
+            className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-2 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors">
+            {cms?.compare_button_text || "Se fullständig prisjämförelse"}
           </button>
         </div>
       </section>
-
-      {/* Reuse V1 comparison modal */}
       <PricingComparison isOpen={showComparison} onClose={() => setShowComparison(false)} />
     </>
   );
 }
 
 /* ═══════════════════════════════════════════════════
-   FAQ - animated accordion
+   FAQ – fully CMS-driven accordion
    ═══════════════════════════════════════════════════ */
-const faqData = [
-  { q: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", a: "Nihil commodi sint adipisci dignissimos ducimus quidem dolorem recusandae et sint quia doloremque. Voluptatem sed et ut impedit possimus nihil quaerat dolores architecto" },
-  { q: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", a: "Nihil commodi sint adipisci dignissimos ducimus quidem dolorem recusandae et sint quia doloremque." },
-  { q: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", a: "Nihil commodi sint adipisci dignissimos ducimus quidem dolorem recusandae et sint quia doloremque." },
-  { q: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", a: "Nihil commodi sint adipisci dignissimos ducimus quidem dolorem recusandae." },
-];
+function V2FAQ({ cms }: { cms: any }) {
+  const fItems = (cms?.items || []).map((f: any) => ({ q: f.question, a: f.answer }));
+  const [open, setOpen] = useState(2);
 
-function V2FAQ({ cms }: { cms?: any }) {
-  const fItems = cms?.items?.length
-    ? cms.items.map((f: any) => ({ q: f.question, a: f.answer }))
-    : faqData;
-  const [open, setOpen] = useState(2); // third item open by default like Figma
+  if (!fItems.length) return null;
+
   return (
     <section className="bg-[#fafafa] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[59px]">
-        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Vanliga frågor"}</h2>
+        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
         <div className="flex flex-col">
           {fItems.map((f: any, i: number) => (
             <FAQItemV2 key={i} q={f.q} a={f.a} isOpen={open === i} onClick={() => setOpen(open === i ? -1 : i)} isLast={i === fItems.length - 1} />
           ))}
         </div>
-
-        <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-3 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors mt-4">
-          Se alla frågor
-        </a>
+        {cms?.cta_text && (
+          <a href={cms?.cta_link || "/faq"} className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-3 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors mt-4">
+            {cms.cta_text}
+          </a>
+        )}
       </div>
     </section>
   );
@@ -845,17 +741,17 @@ function FAQItemV2({ q, a, isOpen, onClick, isLast }: { q: string; a: string; is
 }
 
 /* ═══════════════════════════════════════════════════
-   CASES - horizontal scroll with drag + edge fade
+   CASES – fully CMS-driven carousel
    ═══════════════════════════════════════════════════ */
-function V2Cases({ cms }: { cms?: any }) {
-  const defaultCases = [
-    { name: "Katarina", title: "Träffa\nKatarina!", desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati.", slug: "katarina" },
-    { name: "Lena", title: "Träffa\nLena", desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati.", slug: "lena" },
-    { name: "Erik", title: "Träffa\nErik!", desc: "Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod.", slug: "erik" },
-  ];
-  const cases = cms?.items?.length
-    ? cms.items.map((c: any) => ({ name: c.name, title: c.title, desc: c.description }))
-    : defaultCases;
+function V2Cases({ cms }: { cms: any }) {
+  const cases = (cms?.items || []).map((c: any) => ({
+    name: c.name,
+    title: c.title,
+    desc: c.description,
+    img: c.image?.filename || imgCase,
+    buttonText: c.button_text,
+    slug: c.slug || c.name?.toLowerCase(),
+  }));
   const [slide, setSlide] = useState(0);
   const dragRef = useRef<{ x: number } | null>(null);
   const trackRef2 = useRef<HTMLDivElement>(null);
@@ -877,10 +773,12 @@ function V2Cases({ cms }: { cms?: any }) {
     if (Math.abs(dx) > 40) setSlide((p) => Math.max(0, Math.min(maxSlide, p + (dx > 0 ? -1 : 1))));
   };
 
+  if (!cases.length) return null;
+
   return (
     <section id="v2-cases" className="bg-[#ede1c9] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[51px]">
-        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Case"}</h2>
+        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
 
         <div className="overflow-hidden cursor-grab active:cursor-grabbing"
           onPointerDown={onPointerDown} onPointerUp={onPointerUp} style={{ touchAction: "pan-y" }}>
@@ -889,17 +787,15 @@ function V2Cases({ cms }: { cms?: any }) {
             {cases.map((c: any, i: number) => (
               <div key={i} onClick={() => setSlide(i)} className={`shrink-0 bg-[#b4bbfd] rounded-[10px] p-[24px] md:p-[55px] w-[calc(100vw-48px)] md:w-[918px] transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
                 <div className="flex flex-col md:flex-row md:justify-between w-full gap-[24px] md:gap-0 md:h-[390px]">
-                  {/* Image first on mobile */}
                   <div className="w-full h-[220px] md:h-full md:w-[390px] rounded-[10px] overflow-hidden shrink-0 md:order-2">
-                    <img src={imgCase} alt={c.name} className="w-full h-full object-cover" draggable={false} />
+                    <img src={c.img} alt={c.name} className="w-full h-full object-cover" draggable={false} />
                   </div>
-                  {/* Text */}
                   <div className="flex flex-col justify-between md:order-1 gap-[20px]">
                     <div>
                       <h3 className="text-[#5d0f0f] text-[32px] md:text-[60px] font-semibold leading-[0.9] tracking-[-2px] md:tracking-[-3px] whitespace-pre-wrap">{c.title}</h3>
                       <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5] mt-4 md:mt-6 max-w-[321px]">{c.desc}</p>
                     </div>
-                    <a href={`/case/${c.slug || c.name?.toLowerCase()}`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] text-center cursor-pointer hover:bg-[#5664e2] transition-colors">Läs hela story</a>
+                    <a href={`/case/${c.slug}`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] text-center cursor-pointer hover:bg-[#5664e2] transition-colors">{c.buttonText}</a>
                   </div>
                 </div>
               </div>
@@ -917,31 +813,29 @@ function V2Cases({ cms }: { cms?: any }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   FOOTER
+   FOOTER – fully CMS-driven
    ═══════════════════════════════════════════════════ */
-function V2Footer() {
-  const cols = [
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum", "Praesentium", "praesentium.", "Numquam unde"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum", "Praesentium"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum", "Praesentium", "praesentium.", "Numquam unde"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum", "praesentium.", "Unde"] },
-  ];
+function V2Footer({ cms }: { cms: any }) {
+  const columns = (cms?.columns || []).map((col: any) => ({
+    title: col.title,
+    links: (col.links || []).map((l: any) => ({ label: l.label, url: l.url })),
+  }));
 
   return (
     <footer className="bg-[#5d0f0f] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[63px]">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-[16px] tracking-[-0.32px]">
-          {cols.map((col, i) => (
-            <div key={i} className="flex flex-col gap-1 leading-[1.8]">
-              <p className="text-[#fafafa] font-semibold">{col.title}</p>
-              {col.links.map((l, j) => (
-                <p key={j} className="text-[#b4bbfd] font-medium cursor-pointer hover:text-white transition-colors">{l}</p>
-              ))}
-            </div>
-          ))}
-        </div>
+        {columns.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-[16px] tracking-[-0.32px]">
+            {columns.map((col: any, i: number) => (
+              <div key={i} className="flex flex-col gap-1 leading-[1.8]">
+                <p className="text-[#fafafa] font-semibold">{col.title}</p>
+                {col.links.map((l: any, j: number) => (
+                  <a key={j} href={l.url} className="text-[#b4bbfd] font-medium cursor-pointer hover:text-white transition-colors">{l.label}</a>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
         <div className="pt-[46px] border-t border-[#b4bbfd]/40">
           <VroffLogoLarge className="w-[160px] h-[48px] text-[#6674f2]" />
         </div>
@@ -951,7 +845,7 @@ function V2Footer() {
 }
 
 /* ═══════════════════════════════════════════════════
-   MAIN PAGE
+   MAIN PAGE – orchestrates all CMS sections
    ═══════════════════════════════════════════════════ */
 function findSection(sections: any[] | null | undefined, component: string): any | null {
   if (!sections) return null;
@@ -967,28 +861,42 @@ export default function V2Page({ onOpenModal, cmsData }: V2PageProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Parse CMS sections -- each section component reads from its CMS block
+  const navData = findSection(cmsData, "navigation");
   const heroData = findSection(cmsData, "hero");
-  const featureData_cms = findSection(cmsData, "feature");
-  const testimonialData_cms = findSection(cmsData, "testimonial");
-  const securityData_cms = findSection(cmsData, "security");
-  const faqData_cms = findSection(cmsData, "faq");
-  const caseData_cms = findSection(cmsData, "case_study");
-  const stepperData_cms = findSection(cmsData, "stepper");
+  const featureData = findSection(cmsData, "feature");
+  const testimonialData = findSection(cmsData, "testimonial");
+  const securityData = findSection(cmsData, "security");
+  const filmData = findSection(cmsData, "film_section");
+  const stepperData = findSection(cmsData, "stepper");
+  const pricingData = findSection(cmsData, "pricing_section");
+  const faqData = findSection(cmsData, "faq");
+  const caseData = findSection(cmsData, "case_study");
+  const footerData = findSection(cmsData, "footer");
+
+  if (!cmsData) {
+    return (
+      <div className="w-full min-h-screen bg-[#f5efdf] flex items-center justify-center" style={{ fontFamily: "'Quicksand', sans-serif" }}>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-[40px] h-[40px] border-[3px] border-[#5d0f0f] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#5d0f0f] text-[18px] font-medium">Laddar...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
-      <V2Header onOpenModal={onOpenModal} scrolled={scrolled} />
-      <V2Hero onOpenModal={onOpenModal} cms={heroData} />
-      <V2Features cms={featureData_cms} />
-      <V2Testimonials cms={testimonialData_cms} />
-      <V2Security cms={securityData_cms} />
-      <V2Film />
-      <V2GetStarted cms={stepperData_cms} />
-      <V2Pricing onOpenModal={onOpenModal} />
-      <V2FAQ cms={faqData_cms} />
-      <V2Cases cms={caseData_cms} />
-      <V2Footer />
+      <V2Header onOpenModal={onOpenModal} scrolled={scrolled} cms={navData} />
+      {heroData && <V2Hero onOpenModal={onOpenModal} cms={heroData} />}
+      {featureData && <V2Features cms={featureData} />}
+      {testimonialData && <V2Testimonials cms={testimonialData} />}
+      {securityData && <V2Security cms={securityData} />}
+      {filmData && <V2Film cms={filmData} />}
+      {stepperData && <V2GetStarted cms={stepperData} />}
+      {pricingData && <V2Pricing onOpenModal={onOpenModal} cms={pricingData} />}
+      {faqData && <V2FAQ cms={faqData} />}
+      {caseData && <V2Cases cms={caseData} />}
+      <V2Footer cms={footerData} />
     </div>
   );
 }
