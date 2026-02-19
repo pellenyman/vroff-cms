@@ -813,6 +813,10 @@ function V2FAQ({ cms }: { cms?: any }) {
             <FAQItemV2 key={i} q={f.q} a={f.a} isOpen={open === i} onClick={() => setOpen(open === i ? -1 : i)} isLast={i === fItems.length - 1} />
           ))}
         </div>
+
+        <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-3 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors mt-4">
+          Se alla frågor
+        </a>
       </div>
     </section>
   );
@@ -845,9 +849,9 @@ function FAQItemV2({ q, a, isOpen, onClick, isLast }: { q: string; a: string; is
    ═══════════════════════════════════════════════════ */
 function V2Cases({ cms }: { cms?: any }) {
   const defaultCases = [
-    { name: "Katarina", title: "Träffa\nKatarina!", desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati." },
-    { name: "Lena", title: "Träffa\nLena", desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati." },
-    { name: "Erik", title: "Träffa\nErik!", desc: "Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod." },
+    { name: "Katarina", title: "Träffa\nKatarina!", desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati.", slug: "katarina" },
+    { name: "Lena", title: "Träffa\nLena", desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati.", slug: "lena" },
+    { name: "Erik", title: "Träffa\nErik!", desc: "Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod.", slug: "erik" },
   ];
   const cases = cms?.items?.length
     ? cms.items.map((c: any) => ({ name: c.name, title: c.title, desc: c.description }))
@@ -895,7 +899,7 @@ function V2Cases({ cms }: { cms?: any }) {
                       <h3 className="text-[#5d0f0f] text-[32px] md:text-[60px] font-semibold leading-[0.9] tracking-[-2px] md:tracking-[-3px] whitespace-pre-wrap">{c.title}</h3>
                       <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5] mt-4 md:mt-6 max-w-[321px]">{c.desc}</p>
                     </div>
-                    <button type="button" className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] cursor-pointer hover:bg-[#5664e2] transition-colors">Läs hela story</button>
+                    <a href={`/case/${c.slug || c.name?.toLowerCase()}`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] text-center cursor-pointer hover:bg-[#5664e2] transition-colors">Läs hela story</a>
                   </div>
                 </div>
               </div>

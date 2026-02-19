@@ -10,7 +10,7 @@ const imgCase = "/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png";
 
 function HeroSection({ blok }: { blok: any }) {
   return (
-    <section className="bg-[#5d0f0f] w-full py-[80px] md:py-[120px] px-6 md:px-[120px]">
+    <section className="bg-[#5d0f0f] w-full py-[60px] md:py-[120px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto text-center flex flex-col items-center gap-[20px]">
         <h1 className="text-[#fafafa] text-[36px] md:text-[64px] font-semibold tracking-[-2px] leading-[1.05]">{blok.headline}</h1>
         {blok.subtext && <p className="text-[#b4bbfd] text-[16px] md:text-[20px] font-medium max-w-[600px]">{blok.subtext}</p>}
@@ -108,18 +108,18 @@ function FaqItem({ q, a, isOpen, onClick, isLast }: { q: string; a: string; isOp
 function CaseStudySection({ blok }: { blok: any }) {
   const items = blok.items || [];
   return (
-    <section className="bg-[#ede1c9] w-full py-[80px] px-6 md:px-[120px]">
-      <div className="max-w-[1200px] mx-auto flex flex-col gap-[40px]">
-        {blok.headline && <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px]">{blok.headline}</h2>}
-        <div className="flex flex-col md:flex-row gap-[30px]">
+    <section className="bg-[#ede1c9] w-full py-[60px] md:py-[80px] px-6 md:px-[120px]">
+      <div className="max-w-[1200px] mx-auto flex flex-col gap-[30px] md:gap-[40px]">
+        {blok.headline && <h2 className="text-[#5d0f0f] text-[24px] md:text-[44px] font-semibold tracking-[-1px] md:tracking-[-1.5px]">{blok.headline}</h2>}
+        <div className="flex flex-col md:flex-row gap-[20px] md:gap-[30px]">
           {items.map((c: any, i: number) => (
-            <div key={c._uid || i} className="bg-[#b4bbfd] rounded-[10px] p-[35px] flex-1 flex flex-col gap-[20px]">
-              <div className="h-[200px] rounded-[10px] overflow-hidden">
+            <div key={c._uid || i} className="bg-[#b4bbfd] rounded-[10px] p-[24px] md:p-[35px] flex-1 flex flex-col gap-[16px] md:gap-[20px]">
+              <div className="h-[180px] md:h-[200px] rounded-[10px] overflow-hidden">
                 <img src={c.image?.filename || imgCase} alt={c.name} className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-[#5d0f0f] text-[24px] font-semibold whitespace-pre-wrap">{c.title}</h3>
-              <p className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5]">{c.description}</p>
-              <a href={c.link?.cached_url || "#"} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-fit hover:bg-[#5664e2] transition-colors">{c.button_text || "Läs mer"}</a>
+              <h3 className="text-[#5d0f0f] text-[20px] md:text-[24px] font-semibold whitespace-pre-wrap">{c.title}</h3>
+              <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5]">{c.description}</p>
+              <a href={c.link?.cached_url || `#`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[24px] py-[10px] rounded-[15px] w-fit hover:bg-[#5664e2] transition-colors">{c.button_text || "Läs mer"}</a>
             </div>
           ))}
         </div>
@@ -132,9 +132,9 @@ function ContactFormSection({ blok }: { blok: any }) {
   const [submitted, setSubmitted] = useState(false);
   const fields = blok.fields || [];
   return (
-    <section className="bg-[#fafafa] w-full py-[80px] px-6 md:px-[120px]">
-      <div className="max-w-[600px] mx-auto flex flex-col gap-[30px]">
-        {blok.headline && <h2 className="text-[#5d0f0f] text-[28px] md:text-[36px] font-semibold tracking-[-1px]">{blok.headline}</h2>}
+    <section className="bg-[#fafafa] w-full py-[60px] md:py-[80px] px-6 md:px-[120px]">
+      <div className="max-w-[600px] mx-auto flex flex-col gap-[24px] md:gap-[30px]">
+        {blok.headline && <h2 className="text-[#5d0f0f] text-[24px] md:text-[36px] font-semibold tracking-[-0.5px] md:tracking-[-1px]">{blok.headline}</h2>}
         {blok.description && <p className="text-[#5d0f0f] text-[16px] font-medium">{blok.description}</p>}
         {submitted ? (
           <div className="bg-[#e6e8fc] rounded-[10px] p-[40px] text-center">
@@ -214,10 +214,12 @@ const blockComponents: Record<string, React.FC<{ blok: any }>> = {
 };
 
 export default function PageRenderer({ sections }: { sections: any[] }) {
+  const [navOpen, setNavOpen] = useState(false);
+
   return (
     <div className="w-full min-h-screen bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
       {/* Nav */}
-      <nav className="bg-[#fafafa] w-full py-4 px-6 md:px-[120px] flex items-center justify-between">
+      <nav className="bg-[#fafafa] w-full py-4 px-6 md:px-[120px] flex flex-wrap items-center justify-between">
         <a href="/" className="text-[#5d0f0f] cursor-pointer">
           <svg className="w-[86px] h-[25.8px]" fill="none" viewBox="0 0 86 25.8">
             <path d={svgPaths.pfbf4c80} fill="currentColor" />
@@ -227,12 +229,29 @@ export default function PageRenderer({ sections }: { sections: any[] }) {
             <path d={svgPaths.p294dfb00} fill="currentColor" />
           </svg>
         </a>
-        <div className="flex items-center gap-[24px]">
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-[24px]">
           <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Hem</a>
           <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">FAQ</a>
           <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Case</a>
           <a href="/kontakt" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kontakt</a>
         </div>
+        {/* Mobile hamburger */}
+        <button type="button" onClick={() => setNavOpen(!navOpen)} className="md:hidden cursor-pointer" aria-label="Meny">
+          <svg width="20" height="12" fill="none" viewBox="0 0 20 12.5">
+            <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
+            <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
+          </svg>
+        </button>
+        {/* Mobile nav dropdown */}
+        {navOpen && (
+          <div className="md:hidden w-full flex flex-col items-center gap-2 pt-4 pb-2">
+            <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Hem</a>
+            <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold py-2">FAQ</a>
+            <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Case</a>
+            <a href="/kontakt" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kontakt</a>
+          </div>
+        )}
       </nav>
 
       {/* Sections */}
