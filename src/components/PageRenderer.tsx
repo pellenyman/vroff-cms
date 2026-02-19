@@ -53,29 +53,41 @@ function CtaSection({ blok }: { blok: any }) {
 }
 
 function FaqFilterSection({ blok }: { blok: any }) {
-  const [active, setActive] = useState("Alla");
-  const categories = ["Alla", ...(blok.categories || []).map((c: any) => c.name)];
-  return (
-    <section className="bg-[#f5efdf] w-full py-[40px] px-6 md:px-[120px]">
-      <div className="max-w-[1200px] mx-auto flex flex-wrap gap-[12px]">
-        {categories.map((cat: string) => (
-          <button key={cat} type="button" onClick={() => setActive(cat)}
-            className={`px-[20px] py-[8px] rounded-[50px] text-[14px] font-semibold cursor-pointer transition-colors ${
-              active === cat ? "bg-[#5d0f0f] text-[#fafafa]" : "bg-white text-[#5d0f0f] hover:bg-[#5d0f0f]/10"
-            }`}>{cat}</button>
-        ))}
-      </div>
-    </section>
-  );
+  return null; // Filter is now integrated into FaqSection
 }
 
 function FaqSection({ blok }: { blok: any }) {
+  const [active, setActive] = useState("Alla");
   const [open, setOpen] = useState(0);
-  const items = blok.items || [];
+  const allItems = blok.items || [];
+
+  // Extract unique categories from items
+  const categories = ["Alla", ...Array.from(new Set(allItems.map((f: any) => f.category).filter(Boolean))) as string[]];
+
+  // Filter items by active category
+  const items = active === "Alla" ? allItems : allItems.filter((f: any) => f.category === active);
+
   return (
-    <section className="bg-[#fafafa] w-full py-[80px] px-6 md:px-[120px]">
-      <div className="max-w-[1200px] mx-auto flex flex-col gap-[40px]">
-        {blok.headline && <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px]">{blok.headline}</h2>}
+    <section className="bg-[#fafafa] w-full py-[60px] md:py-[80px] px-6 md:px-[120px]">
+      <div className="max-w-[1200px] mx-auto flex flex-col gap-[30px] md:gap-[40px]">
+        {blok.headline && <h2 className="text-[#5d0f0f] text-[24px] md:text-[44px] font-semibold tracking-[-1px] md:tracking-[-1.5px]">{blok.headline}</h2>}
+
+        {/* Category tabs */}
+        {categories.length > 1 && (
+          <div className="flex flex-wrap gap-[8px] md:gap-[12px]">
+            {categories.map((cat: string) => (
+              <button key={cat} type="button" onClick={() => { setActive(cat); setOpen(0); }}
+                className={`px-[16px] md:px-[20px] py-[8px] rounded-[50px] text-[13px] md:text-[14px] font-semibold cursor-pointer transition-colors ${
+                  active === cat ? "bg-[#5d0f0f] text-[#fafafa]" : "bg-white text-[#5d0f0f] hover:bg-[#5d0f0f]/10"
+                }`}>{cat}</button>
+            ))}
+          </div>
+        )}
+
+        {/* Count */}
+        <p className="text-[#5d0f0f]/50 text-[14px] font-medium">{items.length} frågor{active !== "Alla" ? ` i "${active}"` : ""}</p>
+
+        {/* FAQ items */}
         <div className="flex flex-col">
           {items.map((f: any, i: number) => (
             <FaqItem key={f._uid || i} q={f.question} a={f.answer} isOpen={open === i} onClick={() => setOpen(open === i ? -1 : i)} isLast={i === items.length - 1} />
