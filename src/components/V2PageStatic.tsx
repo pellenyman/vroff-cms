@@ -5,16 +5,17 @@ import svgPaths from "../svg-9z9wiml24b";
 import { PlusIcon, PlusSmallIcon } from "./Icons";
 import PricingComparison from "./PricingComparison";
 
-const imgHero = "/assets/a4d848fc8e2e4a83a5179b20fc12c3245deb2b64.png";
-const imgFeature1 = "/assets/50bd69f5fdd8bee31086dcd752e9faef3c2d5853.png";
-const imgFeature2 = "/assets/a3c84ae7751b81b4cbd620fcee7d2577b3f201dc.png";
-const imgFeature3 = "/assets/573e77a25801c64ed5aee33c55804dfe3fcf92d1.png";
-const imgAvatar = "/assets/283a376b0fafb9874fefe43652d98fad3cdad31c.png";
-const imgSec1 = "/assets/4c252a4b255cda49a808c6317a1e8e87c8b89453.png";
-const imgSec2 = "/assets/487818f4b6cf2397615f34f309fe40a712ebec95.png";
-const imgSec3 = "/assets/5281ab6aa0636038040ed64dad74e65a1211041f.png";
-const imgFilm = "/assets/1f0e5946b884ef95fa586fc7af2e5bdca32525e7.png";
-const imgCase = "/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png";
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const imgHero = `${BASE}/assets/a4d848fc8e2e4a83a5179b20fc12c3245deb2b64.png`;
+const imgFeature1 = `${BASE}/assets/50bd69f5fdd8bee31086dcd752e9faef3c2d5853.png`;
+const imgFeature2 = `${BASE}/assets/a3c84ae7751b81b4cbd620fcee7d2577b3f201dc.png`;
+const imgFeature3 = `${BASE}/assets/573e77a25801c64ed5aee33c55804dfe3fcf92d1.png`;
+const imgAvatar = `${BASE}/assets/283a376b0fafb9874fefe43652d98fad3cdad31c.png`;
+const imgSec1 = `${BASE}/assets/4c252a4b255cda49a808c6317a1e8e87c8b89453.png`;
+const imgSec2 = `${BASE}/assets/487818f4b6cf2397615f34f309fe40a712ebec95.png`;
+const imgSec3 = `${BASE}/assets/5281ab6aa0636038040ed64dad74e65a1211041f.png`;
+const imgFilm = `${BASE}/assets/1f0e5946b884ef95fa586fc7af2e5bdca32525e7.png`;
+const imgCase = `${BASE}/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png`;
 
 interface V2PageProps {
   onOpenModal: () => void;
