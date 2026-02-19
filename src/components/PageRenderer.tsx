@@ -277,7 +277,7 @@ export default function PageRenderer({ sections, breadcrumb }: { sections: any[]
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-[24px]">
           <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Hem</a>
-          <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">FAQ</a>
+          <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Frågor</a>
           <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kundcase</a>
           <a href="/contact" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kontakt</a>
         </div>
@@ -292,7 +292,7 @@ export default function PageRenderer({ sections, breadcrumb }: { sections: any[]
         {navOpen && (
           <div className="md:hidden w-full flex flex-col items-center gap-2 pt-4 pb-2">
             <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Hem</a>
-            <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold py-2">FAQ</a>
+            <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Frågor</a>
             <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kundcase</a>
             <a href="/contact" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kontakt</a>
           </div>
