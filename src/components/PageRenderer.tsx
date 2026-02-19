@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import svgPaths from "../svg-9z9wiml24b";
 
 const imgAvatar = "/assets/283a376b0fafb9874fefe43652d98fad3cdad31c.png";
 const imgCase = "/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png";
@@ -187,7 +188,13 @@ function FooterSection() {
           ))}
         </div>
         <div className="pt-[46px] border-t border-[#b4bbfd]/40">
-          <span className="text-[#6674f2] text-[24px] font-bold">Vroff</span>
+          <svg className="w-[160px] h-[48px] text-[#6674f2]" fill="none" viewBox="0 0 1200 360">
+            <path d={svgPaths.p28c08800} fill="currentColor" />
+            <path d={svgPaths.p1b850880} fill="currentColor" />
+            <path d={svgPaths.p1f099800} fill="currentColor" />
+            <path d={svgPaths.p1934e700} fill="currentColor" />
+            <path d={svgPaths.p2b9be440} fill="currentColor" />
+          </svg>
         </div>
       </div>
     </footer>
@@ -211,7 +218,15 @@ export default function PageRenderer({ sections }: { sections: any[] }) {
     <div className="w-full min-h-screen bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
       {/* Nav */}
       <nav className="bg-[#fafafa] w-full py-4 px-6 md:px-[120px] flex items-center justify-between">
-        <a href="/" className="text-[#5d0f0f] text-[20px] font-bold cursor-pointer">Vroff</a>
+        <a href="/" className="text-[#5d0f0f] cursor-pointer">
+          <svg className="w-[86px] h-[25.8px]" fill="none" viewBox="0 0 86 25.8">
+            <path d={svgPaths.pfbf4c80} fill="currentColor" />
+            <path d={svgPaths.pea9c280} fill="currentColor" />
+            <path d={svgPaths.p35edc900} fill="currentColor" />
+            <path d={svgPaths.p2a2071c0} fill="currentColor" />
+            <path d={svgPaths.p294dfb00} fill="currentColor" />
+          </svg>
+        </a>
         <div className="flex items-center gap-[24px]">
           <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Hem</a>
           <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">FAQ</a>
