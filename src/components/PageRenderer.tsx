@@ -70,26 +70,32 @@ function FaqFilterSection({ blok }: { blok: any }) {
   return null; // Filter is now integrated into FaqSection
 }
 
+function slugify(str: string): string {
+  return str.toLowerCase().replace(/å/g, "a").replace(/ä/g, "a").replace(/ö/g, "o").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
 function FaqSection({ blok }: { blok: any }) {
   const allItems = blok.items || [];
-  const categories = ["Alla", ...Array.from(new Set(allItems.map((f: any) => f.category).filter(Boolean))) as string[]];
+  const categoryNames = ["Alla", ...Array.from(new Set(allItems.map((f: any) => f.category).filter(Boolean))) as string[]];
 
-  // Read category from URL
   const [active, setActive] = useState("Alla");
   const [open, setOpen] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const cat = params.get("kategori");
-    if (cat && categories.includes(cat)) setActive(cat);
+    const slug = params.get("category");
+    if (slug) {
+      const match = categoryNames.find((c) => slugify(c) === slug);
+      if (match) setActive(match);
+    }
   }, []);
 
   const selectCategory = (cat: string) => {
     setActive(cat);
     setOpen(0);
     const url = new URL(window.location.href);
-    if (cat === "Alla") { url.searchParams.delete("kategori"); }
-    else { url.searchParams.set("kategori", cat); }
+    if (cat === "Alla") { url.searchParams.delete("category"); }
+    else { url.searchParams.set("category", slugify(cat)); }
     window.history.pushState({}, "", url.toString());
   };
 
@@ -100,11 +106,10 @@ function FaqSection({ blok }: { blok: any }) {
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[30px] md:gap-[40px]">
         {blok.headline && <h2 className="text-[#5d0f0f] text-[24px] md:text-[44px] font-semibold tracking-[-1px] md:tracking-[-1.5px]">{blok.headline}</h2>}
 
-        {/* Category tabs -- linkable */}
-        {categories.length > 1 && (
+        {categoryNames.length > 1 && (
           <div className="flex flex-wrap gap-[8px] md:gap-[12px]">
-            {categories.map((cat: string) => (
-              <a key={cat} href={cat === "Alla" ? "/faq" : `/faq?kategori=${encodeURIComponent(cat)}`}
+            {categoryNames.map((cat: string) => (
+              <a key={cat} href={cat === "Alla" ? "/faq" : `/faq?category=${slugify(cat)}`}
                 onClick={(e) => { e.preventDefault(); selectCategory(cat); }}
                 className={`px-[16px] md:px-[20px] py-[8px] rounded-[50px] text-[13px] md:text-[14px] font-semibold cursor-pointer transition-colors ${
                   active === cat ? "bg-[#5d0f0f] text-[#fafafa]" : "bg-white text-[#5d0f0f] hover:bg-[#5d0f0f]/10"
@@ -113,7 +118,6 @@ function FaqSection({ blok }: { blok: any }) {
           </div>
         )}
 
-        {/* Count */}
         <p className="text-[#5d0f0f]/50 text-[14px] font-medium">{items.length} frågor{active !== "Alla" ? ` i "${active}"` : ""}</p>
 
         {/* FAQ items */}
