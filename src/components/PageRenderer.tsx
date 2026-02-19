@@ -131,7 +131,7 @@ function CaseStudySection({ blok }: { blok: any }) {
               </div>
               <h3 className="text-[#5d0f0f] text-[20px] md:text-[24px] font-semibold whitespace-pre-wrap">{c.title}</h3>
               <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5]">{c.description}</p>
-              <a href={c.link?.cached_url || `#`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[24px] py-[10px] rounded-[15px] w-fit hover:bg-[#5664e2] transition-colors">{c.button_text || "Läs mer"}</a>
+              <a href={c.link?.cached_url || `/case/${c.name?.toLowerCase()}`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[24px] py-[10px] rounded-[15px] w-fit hover:bg-[#5664e2] transition-colors">{c.button_text || "Läs mer"}</a>
             </div>
           ))}
         </div>
@@ -225,7 +225,7 @@ const blockComponents: Record<string, React.FC<{ blok: any }>> = {
   footer: ({ blok }) => <FooterSection />,
 };
 
-export default function PageRenderer({ sections }: { sections: any[] }) {
+export default function PageRenderer({ sections, breadcrumb }: { sections: any[]; breadcrumb?: { label: string; href: string } }) {
   const [navOpen, setNavOpen] = useState(false);
 
   return (
@@ -265,6 +265,17 @@ export default function PageRenderer({ sections }: { sections: any[] }) {
           </div>
         )}
       </nav>
+
+      {/* Breadcrumb */}
+      {breadcrumb && (
+        <div className="bg-[#f5efdf] w-full px-6 md:px-[120px] py-3">
+          <div className="max-w-[1200px] mx-auto">
+            <a href={breadcrumb.href} className="text-[#5d0f0f]/60 text-[14px] font-medium hover:text-[#5d0f0f] transition-colors cursor-pointer">
+              ← {breadcrumb.label}
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* Sections */}
       {sections.map((blok: any) => {

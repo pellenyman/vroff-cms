@@ -27,5 +27,5 @@ export default function CaseSinglePage({ params }: { params: Promise<{ slug: str
     </div>
   );
 
-  return <PageRenderer sections={sections} />;
+  return <PageRenderer sections={sections} breadcrumb={{ label: "Alla kundcase", href: "/case" }} />;
 }
