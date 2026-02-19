@@ -188,11 +188,15 @@ const featureData = [
 ];
 
 function V2Features({ cms }: { cms?: any }) {
+  const fallbackImgs = [imgFeature1, imgFeature2, imgFeature3];
+  const items = cms?.items?.length
+    ? cms.items.map((it: any, i: number) => ({ title: it.title, desc: it.description, img: it.image?.filename || fallbackImgs[i % 3], bg: it.background_color || undefined, imgClass: it.background_color ? "absolute bottom-0 right-0 w-[95%] h-[86%] object-cover" : "w-full h-full object-cover" }))
+    : featureData;
   const [slide, setSlide] = useState(0);
   const dragRef = useRef<{ x: number } | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(557);
-  const maxSlide = Math.max(0, featureData.length - 1);
+  const maxSlide = Math.max(0, items.length - 1);
 
   const measure = useCallback(() => {
     if (!trackRef.current) return;
@@ -221,7 +225,7 @@ function V2Features({ cms }: { cms?: any }) {
           onPointerDown={onPointerDown} onPointerUp={onPointerUp} style={{ touchAction: "pan-y" }}>
           <div ref={trackRef} className="flex gap-[57px] transition-transform duration-500 ease-out select-none"
             style={{ transform: `translateX(${-slide * step}px)` }}>
-            {featureData.map((f, i) => (
+            {items.map((f: any, i: number) => (
               <div key={i} onClick={() => setSlide(Math.max(0, Math.min(maxSlide, i)))} className={`shrink-0 w-[calc(100vw-48px)] md:w-[500px] flex flex-col transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
                 <div className="h-[280px] md:h-[380px] rounded-[10px] overflow-hidden relative" style={f.bg ? { backgroundColor: f.bg } : undefined}>
                   <img src={f.img} alt={f.title} className={f.imgClass} draggable={false} />
@@ -261,11 +265,14 @@ const testimonialData = [
 ];
 
 function V2Testimonials({ cms }: { cms?: any }) {
+  const tItems = cms?.items?.length
+    ? cms.items.map((t: any) => ({ quote: t.quote, name: t.name, role: t.role, image: t.avatar?.filename || imgAvatar }))
+    : testimonialData;
   const [slide, setSlide] = useState(0);
   const dragRef = useRef<{ x: number } | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(370);
-  const maxSlide = Math.max(0, testimonialData.length - 1);
+  const maxSlide = Math.max(0, tItems.length - 1);
 
   const measure = useCallback(() => {
     if (!trackRef.current) return;
@@ -288,7 +295,7 @@ function V2Testimonials({ cms }: { cms?: any }) {
         <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Vad folk säger"}</h2>
         <div className="overflow-hidden cursor-grab active:cursor-grabbing" onPointerDown={onPointerDown} onPointerUp={onPointerUp} style={{ touchAction: "pan-y" }}>
           <div ref={trackRef} className="flex gap-[40px] transition-transform duration-500 ease-out select-none" style={{ transform: `translateX(${-slide * step}px)` }}>
-            {testimonialData.map((t, i) => (
+            {tItems.map((t: any, i: number) => (
               <div key={i} onClick={() => setSlide(Math.max(0, Math.min(maxSlide, i)))} className={`shrink-0 w-[calc(100vw-48px)] md:w-[330px] bg-[#e8eaff] rounded-[10px] p-[35px] flex flex-col gap-[23px] justify-between transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
                 <p className="text-[#5d0f0f] text-[20px] font-medium leading-[1.5] flex-1">{t.quote}</p>
                 <div className="flex items-center gap-[16px]">
@@ -321,6 +328,10 @@ const securityData = [
 ];
 
 function V2Security({ cms }: { cms?: any }) {
+  const fallbackSecImgs = [imgSec1, imgSec2, imgSec3];
+  const sItems = cms?.items?.length
+    ? cms.items.map((s: any, i: number) => ({ title: s.title, desc: s.description, img: s.image?.filename || fallbackSecImgs[i % 3] }))
+    : securityData;
   return (
     <section id="v2-security" className="bg-[#3b0101] w-full py-[100px] md:py-[150px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[50px]">
@@ -329,7 +340,7 @@ function V2Security({ cms }: { cms?: any }) {
           <p className="text-[#c15333] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px]">Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod.</p>
         </div>
         <div className="flex flex-col md:flex-row gap-[30px]">
-          {securityData.map((s, i) => (
+          {sItems.map((s: any, i: number) => (
             <div key={i} className="bg-[#5d0f0f] rounded-[10px] p-[44px] flex flex-col gap-[25px] flex-1">
               <div className="h-[220px] rounded-[7px] overflow-hidden">
                 <img src={s.img} alt={s.title} className="w-full h-full object-cover" />
@@ -480,6 +491,9 @@ const steps = [
 ];
 
 function V2GetStarted({ cms }: { cms?: any }) {
+  const stepsData = cms?.steps?.length
+    ? cms.steps.map((s: any) => ({ label: s.label, mockTitle: s.title, mockContent: s.content }))
+    : steps;
   const [activeStep, setActiveStep] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [paused, setPaused] = useState(false);
@@ -487,7 +501,7 @@ function V2GetStarted({ cms }: { cms?: any }) {
   useEffect(() => {
     if (paused) return;
     timerRef.current = setInterval(() => {
-      setActiveStep((p) => (p + 1) % steps.length);
+      setActiveStep((p) => (p + 1) % stepsData.length);
     }, 4000);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [paused, activeStep]);
@@ -501,7 +515,7 @@ function V2GetStarted({ cms }: { cms?: any }) {
           onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           {/* Step list */}
           <div className="bg-[#d7dbfe] rounded-[10px] py-[25px] w-full md:w-[330px] shrink-0">
-            {steps.map((s, i) => (
+            {stepsData.map((s, i) => (
               <button
                 key={i}
                 type="button"
@@ -522,8 +536,8 @@ function V2GetStarted({ cms }: { cms?: any }) {
               <div className="bg-[#5d0f0f] w-[33px] h-[33px] rounded-[10px] flex items-center justify-center">
                 <span className="text-white text-[16px] font-bold">{activeStep + 1}</span>
               </div>
-              <h3 className="text-white text-[24px] md:text-[32px] font-semibold tracking-[-0.64px] animate-[slideInRight_0.35s_ease-out]">{steps[activeStep].mockTitle}</h3>
-              <p className="text-[#e0d1b4] text-[16px] md:text-[18px] font-medium leading-[1.5] max-w-[500px] animate-[slideInRight_0.35s_ease-out]">{steps[activeStep].mockContent}</p>
+              <h3 className="text-white text-[24px] md:text-[32px] font-semibold tracking-[-0.64px] animate-[slideInRight_0.35s_ease-out]">{stepsData[activeStep].mockTitle}</h3>
+              <p className="text-[#e0d1b4] text-[16px] md:text-[18px] font-medium leading-[1.5] max-w-[500px] animate-[slideInRight_0.35s_ease-out]">{stepsData[activeStep].mockContent}</p>
 
               {/* Step 0: Download – platform buttons */}
               {activeStep === 0 && (
@@ -630,14 +644,14 @@ function V2GetStarted({ cms }: { cms?: any }) {
 
             {/* Progress – röd skala */}
             <div className="mt-8 bg-[#5d0f0f] rounded-[10px] h-[8px] overflow-hidden">
-              <div className="h-full bg-[#9b3316] rounded-[10px] transition-all duration-300" style={{ width: `${((activeStep + 1) / steps.length) * 100}%` }} />
+              <div className="h-full bg-[#9b3316] rounded-[10px] transition-all duration-300" style={{ width: `${((activeStep + 1) / stepsData.length) * 100}%` }} />
             </div>
           </div>
         </div>
 
         {/* Dot indicators – röd skala */}
         <div className="flex items-center justify-center gap-[25px]">
-          {steps.map((_, i) => (
+          {stepsData.map((_, i) => (
             <button key={i} type="button" onClick={() => setActiveStep(i)}
               className={`rounded-full transition-all duration-300 cursor-pointer ${i === activeStep ? "bg-[#5d0f0f] w-[82px] h-[15px]" : "bg-[#5d0f0f] w-[15px] h-[15px] opacity-30"}`} />
           ))}
@@ -788,14 +802,17 @@ const faqData = [
 ];
 
 function V2FAQ({ cms }: { cms?: any }) {
+  const fItems = cms?.items?.length
+    ? cms.items.map((f: any) => ({ q: f.question, a: f.answer }))
+    : faqData;
   const [open, setOpen] = useState(2); // third item open by default like Figma
   return (
     <section className="bg-[#fafafa] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[59px]">
         <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Vanliga frågor"}</h2>
         <div className="flex flex-col">
-          {faqData.map((f, i) => (
-            <FAQItemV2 key={i} q={f.q} a={f.a} isOpen={open === i} onClick={() => setOpen(open === i ? -1 : i)} isLast={i === faqData.length - 1} />
+          {fItems.map((f: any, i: number) => (
+            <FAQItemV2 key={i} q={f.q} a={f.a} isOpen={open === i} onClick={() => setOpen(open === i ? -1 : i)} isLast={i === fItems.length - 1} />
           ))}
         </div>
       </div>
@@ -829,15 +846,18 @@ function FAQItemV2({ q, a, isOpen, onClick, isLast }: { q: string; a: string; is
    CASES - horizontal scroll with drag + edge fade
    ═══════════════════════════════════════════════════ */
 function V2Cases({ cms }: { cms?: any }) {
-  const [slide, setSlide] = useState(0);
-  const dragRef = useRef<{ x: number } | null>(null);
-  const trackRef2 = useRef<HTMLDivElement>(null);
-  const [step, setStep] = useState(977);
-  const cases = [
+  const defaultCases = [
     { name: "Katarina", title: "Träffa\nKatarina!", desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati." },
     { name: "Lena", title: "Träffa\nLena", desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati." },
     { name: "Erik", title: "Träffa\nErik!", desc: "Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod." },
   ];
+  const cases = cms?.items?.length
+    ? cms.items.map((c: any) => ({ name: c.name, title: c.title, desc: c.description }))
+    : defaultCases;
+  const [slide, setSlide] = useState(0);
+  const dragRef = useRef<{ x: number } | null>(null);
+  const trackRef2 = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(977);
   const maxSlide = Math.max(0, cases.length - 1);
 
   const measure2 = useCallback(() => {
