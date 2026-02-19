@@ -18,6 +18,7 @@ const imgCase = "/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png";
 
 interface V2PageProps {
   onOpenModal: () => void;
+  cmsData?: any[] | null;
 }
 
 /* ─── SVG Logo ─── */
@@ -158,16 +159,16 @@ function V2Header({ onOpenModal, scrolled }: { onOpenModal: () => void; scrolled
 /* ═══════════════════════════════════════════════════
    HERO
    ═══════════════════════════════════════════════════ */
-function V2Hero({ onOpenModal }: { onOpenModal: () => void }) {
+function V2Hero({ onOpenModal, cms }: { onOpenModal: () => void; cms?: any }) {
   return (
     <section className="relative w-full h-[700px] md:h-[800px] flex items-center justify-center overflow-hidden -mt-[90px]">
-      <img src={imgHero} alt="Vroff hero" className="absolute inset-0 w-full h-full object-cover" />
+      <img src={cms?.background_image?.filename || imgHero} alt="Vroff hero" className="absolute inset-0 w-full h-full object-cover" />
       <div className="relative z-10 flex flex-col items-center gap-[30px] pt-[80px] text-center px-6">
         <h1 className="text-[#fafafa] text-[40px] md:text-[76px] font-semibold leading-[1.01] tracking-[-2px] md:tracking-[-3.8px] max-w-[759px]">
-          Vroff är det nya mänskligare sättet att samarbeta
+          {cms?.headline || "Vroff är det nya mänskligare sättet att samarbeta"}
         </h1>
         <p className="text-white text-[16px] md:text-[20px] max-w-[600px]">
-          Lorem ipsum dolor Esse ipsam incidunt eligendi veroihil utsit amet, onsectetur adipiscing elit.
+          {cms?.subtext || "Lorem ipsum dolor Esse ipsam incidunt eligendi veroihil utsit amet, onsectetur adipiscing elit."}
         </p>
         <button type="button" onClick={onOpenModal} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] cursor-pointer hover:bg-[#5664e2] transition-colors">
           Prova på
@@ -186,7 +187,7 @@ const featureData = [
   { title: "Allt på ett ställe", img: imgFeature3, desc: "Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod. Fuga veritatis eligendi unde ut.", bg: undefined, imgClass: "w-full h-full object-cover" },
 ];
 
-function V2Features() {
+function V2Features({ cms }: { cms?: any }) {
   const [slide, setSlide] = useState(0);
   const dragRef = useRef<{ x: number } | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -212,7 +213,7 @@ function V2Features() {
     <section className="bg-[#f5efdf] w-full py-[100px] md:py-[150px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[65px]">
         <div>
-          <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">Detta är Vroff</h2>
+          <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Detta är Vroff"}</h2>
           <p className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px]">Voluptas veritatis delectus debitis officia. Eaque et nulla reprehenderit occaecati expedita quia deleniti error dolor labore quod. Fuga veritatis eligendi unde ut.</p>
         </div>
 
@@ -259,7 +260,7 @@ const testimonialData = [
   { quote: '"Vi har testat många lösningar men denna är överlägsen."', name: "Maria Andersson", role: "Team Lead" },
 ];
 
-function V2Testimonials() {
+function V2Testimonials({ cms }: { cms?: any }) {
   const [slide, setSlide] = useState(0);
   const dragRef = useRef<{ x: number } | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -284,7 +285,7 @@ function V2Testimonials() {
   return (
     <section className="bg-[#fafafa] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1440px] mx-auto flex flex-col gap-[50px]">
-        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">Vad folk säger</h2>
+        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Vad folk säger"}</h2>
         <div className="overflow-hidden cursor-grab active:cursor-grabbing" onPointerDown={onPointerDown} onPointerUp={onPointerUp} style={{ touchAction: "pan-y" }}>
           <div ref={trackRef} className="flex gap-[40px] transition-transform duration-500 ease-out select-none" style={{ transform: `translateX(${-slide * step}px)` }}>
             {testimonialData.map((t, i) => (
@@ -319,7 +320,7 @@ const securityData = [
   { title: "Svenskt", desc: "Vroff utvecklas och driftas i Sverige och omfattas av GDPR, DORA, NIS2 och övriga EU regelverk.", img: imgSec3 },
 ];
 
-function V2Security() {
+function V2Security({ cms }: { cms?: any }) {
   return (
     <section id="v2-security" className="bg-[#3b0101] w-full py-[100px] md:py-[150px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[50px]">
@@ -478,7 +479,7 @@ const steps = [
   { label: "Nu är du igång :-)", mockTitle: "Klart!", mockContent: "Du och ditt team är nu redo att samarbeta på ett mänskligare sätt." },
 ];
 
-function V2GetStarted() {
+function V2GetStarted({ cms }: { cms?: any }) {
   const [activeStep, setActiveStep] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [paused, setPaused] = useState(false);
@@ -494,7 +495,7 @@ function V2GetStarted() {
   return (
     <section className="bg-[#b4bbfd] w-full py-[100px] md:py-[150px] px-6 md:px-[120px] overflow-hidden">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[60px] md:gap-[104px]">
-        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">Komma igång på 30 sekunder</h2>
+        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Komma igång på 30 sekunder"}</h2>
 
         <div className="flex flex-col md:flex-row gap-[40px] md:gap-[64px]"
           onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
@@ -786,12 +787,12 @@ const faqData = [
   { q: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", a: "Nihil commodi sint adipisci dignissimos ducimus quidem dolorem recusandae." },
 ];
 
-function V2FAQ() {
+function V2FAQ({ cms }: { cms?: any }) {
   const [open, setOpen] = useState(2); // third item open by default like Figma
   return (
     <section className="bg-[#fafafa] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[59px]">
-        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">Vanliga frågor</h2>
+        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Vanliga frågor"}</h2>
         <div className="flex flex-col">
           {faqData.map((f, i) => (
             <FAQItemV2 key={i} q={f.q} a={f.a} isOpen={open === i} onClick={() => setOpen(open === i ? -1 : i)} isLast={i === faqData.length - 1} />
@@ -827,7 +828,7 @@ function FAQItemV2({ q, a, isOpen, onClick, isLast }: { q: string; a: string; is
 /* ═══════════════════════════════════════════════════
    CASES - horizontal scroll with drag + edge fade
    ═══════════════════════════════════════════════════ */
-function V2Cases() {
+function V2Cases({ cms }: { cms?: any }) {
   const [slide, setSlide] = useState(0);
   const dragRef = useRef<{ x: number } | null>(null);
   const trackRef2 = useRef<HTMLDivElement>(null);
@@ -857,7 +858,7 @@ function V2Cases() {
   return (
     <section id="v2-cases" className="bg-[#ede1c9] w-full py-[100px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[51px]">
-        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">Case</h2>
+        <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline || "Case"}</h2>
 
         <div className="overflow-hidden cursor-grab active:cursor-grabbing"
           onPointerDown={onPointerDown} onPointerUp={onPointerUp} style={{ touchAction: "pan-y" }}>
@@ -930,7 +931,12 @@ function V2Footer() {
 /* ═══════════════════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════════════════ */
-export default function V2Page({ onOpenModal }: V2PageProps) {
+function findSection(sections: any[] | null | undefined, component: string): any | null {
+  if (!sections) return null;
+  return sections.find((s: any) => s.component === component) || null;
+}
+
+export default function V2Page({ onOpenModal, cmsData }: V2PageProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -939,18 +945,27 @@ export default function V2Page({ onOpenModal }: V2PageProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Parse CMS sections -- each section component reads from its CMS block
+  const heroData = findSection(cmsData, "hero");
+  const featureData_cms = findSection(cmsData, "feature");
+  const testimonialData_cms = findSection(cmsData, "testimonial");
+  const securityData_cms = findSection(cmsData, "security");
+  const faqData_cms = findSection(cmsData, "faq");
+  const caseData_cms = findSection(cmsData, "case_study");
+  const stepperData_cms = findSection(cmsData, "stepper");
+
   return (
     <div className="w-full min-h-screen bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
       <V2Header onOpenModal={onOpenModal} scrolled={scrolled} />
-      <V2Hero onOpenModal={onOpenModal} />
-      <V2Features />
-      <V2Testimonials />
-      <V2Security />
+      <V2Hero onOpenModal={onOpenModal} cms={heroData} />
+      <V2Features cms={featureData_cms} />
+      <V2Testimonials cms={testimonialData_cms} />
+      <V2Security cms={securityData_cms} />
       <V2Film />
-      <V2GetStarted />
+      <V2GetStarted cms={stepperData_cms} />
       <V2Pricing onOpenModal={onOpenModal} />
-      <V2FAQ />
-      <V2Cases />
+      <V2FAQ cms={faqData_cms} />
+      <V2Cases cms={caseData_cms} />
       <V2Footer />
     </div>
   );

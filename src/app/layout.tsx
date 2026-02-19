@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
+import StoryblokProvider from "@/components/StoryblokProvider";
 import "./globals.css";
 
 const quicksand = Quicksand({
@@ -19,10 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="sv">
-      <body className={`${quicksand.variable} font-[family-name:var(--font-quicksand)] antialiased`}>
-        {children}
-      </body>
-    </html>
+    <StoryblokProvider>
+      <html lang="sv">
+        <body className={`${quicksand.variable} font-[family-name:var(--font-quicksand)] antialiased`}>
+          {children}
+        </body>
+      </html>
+    </StoryblokProvider>
   );
 }
