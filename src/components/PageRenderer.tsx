@@ -8,14 +8,28 @@ const imgCase = "/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png";
 
 /* Shared section renderer for CMS pages (FAQ, Case, Kontakt) */
 
+const heroImages: Record<string, string> = {
+  "Vanliga frågor": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1400&q=80",
+  "Kundcase": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1400&q=80",
+  "Kontakta oss": "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1400&q=80",
+  "Träffa Katarina!": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1400&q=80",
+  "Träffa Lena": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=1400&q=80",
+  "Träffa Erik!": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1400&q=80",
+};
+const defaultHeroImg = "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80";
+
 function HeroSection({ blok }: { blok: any }) {
+  const bgImg = blok.background_image?.filename || heroImages[blok.headline] || defaultHeroImg;
+
   return (
-    <section className="bg-[#5d0f0f] w-full py-[60px] md:py-[120px] px-6 md:px-[120px]">
-      <div className="max-w-[1200px] mx-auto text-center flex flex-col items-center gap-[20px]">
-        <h1 className="text-[#fafafa] text-[36px] md:text-[64px] font-semibold tracking-[-2px] leading-[1.05]">{blok.headline}</h1>
-        {blok.subtext && <p className="text-[#b4bbfd] text-[16px] md:text-[20px] font-medium max-w-[600px]">{blok.subtext}</p>}
+    <section className="relative w-full h-[300px] md:h-[450px] flex items-center justify-center overflow-hidden">
+      <img src={bgImg} alt={blok.headline || ""} className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-[#3b0101]/70" />
+      <div className="relative z-10 text-center flex flex-col items-center gap-[16px] md:gap-[20px] px-6">
+        <h1 className="text-[#fafafa] text-[32px] md:text-[64px] font-semibold tracking-[-1.5px] md:tracking-[-2px] leading-[1.05]">{blok.headline}</h1>
+        {blok.subtext && <p className="text-white/80 text-[14px] md:text-[20px] font-medium max-w-[600px]">{blok.subtext}</p>}
         {blok.cta_text && (
-          <a href={blok.cta_link?.cached_url || "/kontakt"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] mt-4 hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
+          <a href={blok.cta_link?.cached_url || "/kontakt"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[14px] md:text-[16px] mt-2 md:mt-4 hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
         )}
       </div>
     </section>
