@@ -5,7 +5,7 @@ import PageRenderer from "@/components/PageRenderer";
 
 export default function CatchAllPage({ params }: { params: Promise<{ slug: string[] }> }) {
   const { slug } = use(params);
-  // Storyblok preview sends /kundcase/katarina, map to our route
+  // Storyblok preview catch-all
   const fullSlug = slug.join("/");
   const [sections, setSections] = useState<any[] | null>(null);
   const [error, setError] = useState(false);
@@ -30,6 +30,6 @@ export default function CatchAllPage({ params }: { params: Promise<{ slug: strin
   );
 
   // Add breadcrumb for case stories (kundcase/katarina or just katarina)
-  const isCaseSingle = (slug.length === 2 && slug[0] === "kundcase") || (slug.length === 1 && ["katarina", "lena", "erik"].includes(slug[0]));
-  return <PageRenderer sections={sections} breadcrumb={isCaseSingle ? { label: "Alla kundcase", href: "/kundcase" } : undefined} />;
+  const isCaseSingle = (slug.length === 2 && slug[0] === "case") || (slug.length === 1 && ["katarina", "lena", "erik"].includes(slug[0]));
+  return <PageRenderer sections={sections} breadcrumb={isCaseSingle ? { label: "Alla kundcase", href: "/case" } : undefined} />;
 }

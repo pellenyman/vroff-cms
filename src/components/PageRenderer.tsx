@@ -29,7 +29,7 @@ function HeroSection({ blok }: { blok: any }) {
         <h1 className="text-[#fafafa] text-[32px] md:text-[64px] font-semibold tracking-[-1.5px] md:tracking-[-2px] leading-[1.05]">{blok.headline}</h1>
         {blok.subtext && <p className="text-white/80 text-[14px] md:text-[20px] font-medium max-w-[600px]">{blok.subtext}</p>}
         {blok.cta_text && (
-          <a href={blok.cta_link?.cached_url || "/kontakt"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[14px] md:text-[16px] mt-2 md:mt-4 hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
+          <a href={blok.cta_link?.cached_url || "/contact"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[14px] md:text-[16px] mt-2 md:mt-4 hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
         )}
       </div>
     </section>
@@ -59,7 +59,7 @@ function CtaSection({ blok }: { blok: any }) {
         <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px]">{blok.headline}</h2>
         {blok.description && <p className="text-[#5d0f0f] text-[16px] md:text-[20px] font-medium">{blok.description}</p>}
         {blok.cta_text && (
-          <a href={blok.cta_link?.cached_url || "/kontakt"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
+          <a href={blok.cta_link?.cached_url || "/contact"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
         )}
       </div>
     </section>
@@ -96,7 +96,7 @@ function FaqSection({ blok }: { blok: any }) {
   const items = active === "Alla" ? allItems : allItems.filter((f: any) => f.category === active);
 
   return (
-    <section id="fragor" className="bg-[#fafafa] w-full py-[60px] md:py-[80px] px-6 md:px-[120px]">
+    <section id="faq" className="bg-[#fafafa] w-full py-[60px] md:py-[80px] px-6 md:px-[120px]">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[30px] md:gap-[40px]">
         {blok.headline && <h2 className="text-[#5d0f0f] text-[24px] md:text-[44px] font-semibold tracking-[-1px] md:tracking-[-1.5px]">{blok.headline}</h2>}
 
@@ -273,9 +273,9 @@ export default function PageRenderer({ sections, breadcrumb }: { sections: any[]
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-[24px]">
           <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Hem</a>
-          <a href="/fragor" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Frågor</a>
-          <a href="/kundcase" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kundcase</a>
-          <a href="/kontakt" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kontakt</a>
+          <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">FAQ</a>
+          <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kundcase</a>
+          <a href="/contact" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kontakt</a>
         </div>
         {/* Mobile hamburger */}
         <button type="button" onClick={() => setNavOpen(!navOpen)} className="md:hidden cursor-pointer" aria-label="Meny">
@@ -288,9 +288,9 @@ export default function PageRenderer({ sections, breadcrumb }: { sections: any[]
         {navOpen && (
           <div className="md:hidden w-full flex flex-col items-center gap-2 pt-4 pb-2">
             <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Hem</a>
-            <a href="/fragor" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Frågor</a>
-            <a href="/kundcase" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kundcase</a>
-            <a href="/kontakt" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kontakt</a>
+            <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold py-2">FAQ</a>
+            <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kundcase</a>
+            <a href="/contact" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kontakt</a>
           </div>
         )}
       </nav>

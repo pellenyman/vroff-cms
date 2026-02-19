@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import PageRenderer from "@/components/PageRenderer";
 
-export default function FaqPage() {
+export default function KontaktPage() {
   const [sections, setSections] = useState<any[] | null>(null);
 
   useEffect(() => {
-    fetch(`https://api.storyblok.com/v2/cdn/stories/fragor?token=${process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_API_ACCESS_TOKEN}&version=draft`)
+    fetch(`https://api.storyblok.com/v2/cdn/stories/contact?token=${process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_API_ACCESS_TOKEN}&version=draft`)
       .then(r => r.json())
       .then(d => setSections(d.story?.content?.body || null))
       .catch(() => {});
