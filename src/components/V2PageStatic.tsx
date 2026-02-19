@@ -5,7 +5,7 @@ import svgPaths from "../svg-9z9wiml24b";
 import { PlusIcon, PlusSmallIcon } from "./Icons";
 import PricingComparison from "./PricingComparison";
 
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const BASE = "";
 const imgHero = `${BASE}/assets/a4d848fc8e2e4a83a5179b20fc12c3245deb2b64.png`;
 const imgFeature1 = `${BASE}/assets/50bd69f5fdd8bee31086dcd752e9faef3c2d5853.png`;
 const imgFeature2 = `${BASE}/assets/a3c84ae7751b81b4cbd620fcee7d2577b3f201dc.png`;
