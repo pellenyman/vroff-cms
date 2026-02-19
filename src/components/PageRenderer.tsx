@@ -308,10 +308,14 @@ export default function PageRenderer({ sections, breadcrumb }: { sections: any[]
 
       {/* Sections */}
       {sections.map((blok: any) => {
+        if (blok.component === "footer") return null;
         const Component = blockComponents[blok.component];
         if (!Component) return null;
         return <Component key={blok._uid} blok={blok} />;
       })}
+
+      {/* Footer always rendered */}
+      <FooterSection />
     </div>
   );
 }
