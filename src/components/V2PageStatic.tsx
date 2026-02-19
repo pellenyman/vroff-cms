@@ -512,7 +512,7 @@ function V2GetStarted({ cms }: { cms?: any }) {
           onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           {/* Step list */}
           <div className="bg-[#d7dbfe] rounded-[10px] py-[25px] w-full md:w-[330px] shrink-0">
-            {stepsData.map((s, i) => (
+            {stepsData.map((s: any, i: number) => (
               <button
                 key={i}
                 type="button"
@@ -648,7 +648,7 @@ function V2GetStarted({ cms }: { cms?: any }) {
 
         {/* Dot indicators – röd skala */}
         <div className="flex items-center justify-center gap-[25px]">
-          {stepsData.map((_, i) => (
+          {stepsData.map((_: any, i: number) => (
             <button key={i} type="button" onClick={() => setActiveStep(i)}
               className={`rounded-full transition-all duration-300 cursor-pointer ${i === activeStep ? "bg-[#5d0f0f] w-[82px] h-[15px]" : "bg-[#5d0f0f] w-[15px] h-[15px] opacity-30"}`} />
           ))}
@@ -881,7 +881,7 @@ function V2Cases({ cms }: { cms?: any }) {
           onPointerDown={onPointerDown} onPointerUp={onPointerUp} style={{ touchAction: "pan-y" }}>
           <div ref={trackRef2} className="flex gap-[59px] transition-transform duration-500 ease-out select-none"
             style={{ transform: `translateX(${-slide * step}px)` }}>
-            {cases.map((c, i) => (
+            {cases.map((c: any, i: number) => (
               <div key={i} onClick={() => setSlide(i)} className={`shrink-0 bg-[#b4bbfd] rounded-[10px] p-[24px] md:p-[55px] w-[calc(100vw-48px)] md:w-[918px] transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
                 <div className="flex flex-col md:flex-row md:justify-between w-full gap-[24px] md:gap-0 md:h-[390px]">
                   {/* Image first on mobile */}

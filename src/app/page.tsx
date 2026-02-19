@@ -1,14 +1,24 @@
-import { getStoryblokApi } from "@/lib/storyblok";
-import V2PageCMS from "@/components/V2PageCMS";
+"use client";
 
-export default async function Home() {
-  let cmsData = null;
-  try {
-    const storyblokApi = getStoryblokApi();
-    const { data } = await storyblokApi.get("cdn/stories/home", { version: "draft" });
-    cmsData = data.story.content.body;
-  } catch {
-    // Storyblok not configured -- render with defaults
-  }
-  return <V2PageCMS sections={cmsData} />;
+import { useState, useEffect } from "react";
+import V2PageStatic from "@/components/V2PageStatic";
+import OnboardingModal from "@/components/OnboardingModal";
+
+export default function Home() {
+  const [cmsData, setCmsData] = useState<any[] | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetch(`https://api.storyblok.com/v2/cdn/stories/home?token=${process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_API_ACCESS_TOKEN}&version=draft`)
+      .then(r => r.json())
+      .then(d => setCmsData(d.story?.content?.body || null))
+      .catch(() => {});
+  }, []);
+
+  return (
+    <>
+      <V2PageStatic onOpenModal={() => setModalOpen(true)} cmsData={cmsData} />
+      <OnboardingModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+    </>
+  );
 }
