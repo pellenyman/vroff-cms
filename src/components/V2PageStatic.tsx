@@ -72,22 +72,19 @@ function V2Header({ onOpenModal, scrolled }: { onOpenModal: () => void; scrolled
   const [menuOpen, setMenuOpen] = useState(false);
 
   const allNavItems = [
-    { label: "Pris", href: "#v2-pricing" },
-    { label: "Kundcase", href: "#v2-cases" },
+    { label: "Pris", href: "#pricing" },
+    { label: "Kundcase", href: "/case" },
     { label: "__logo__", href: "#" },
-    { label: "Om oss", href: "#v2-security" },
-    { label: "Media", href: "#v2-film" },
+    { label: "FAQ", href: "/faq" },
+    { label: "Kontakt", href: "/kontakt" },
   ];
 
   const scrollTo = (href: string) => {
-    if (href === "#") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      setMenuOpen(false);
-      return;
-    }
+    setMenuOpen(false);
+    if (href === "#") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    if (href.startsWith("/")) { window.location.href = href; return; }
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    setMenuOpen(false);
   };
 
   return (
