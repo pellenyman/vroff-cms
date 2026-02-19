@@ -7,7 +7,7 @@ export default function CasePage() {
   const [sections, setSections] = useState<any[] | null>(null);
 
   useEffect(() => {
-    fetch(`https://api.storyblok.com/v2/cdn/stories/case?token=${process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_API_ACCESS_TOKEN}&version=draft`)
+    fetch(`https://api.storyblok.com/v2/cdn/stories/case/?token=${process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_API_ACCESS_TOKEN}&version=draft`)
       .then(r => r.json())
       .then(d => setSections(d.story?.content?.body || null))
       .catch(() => {});
