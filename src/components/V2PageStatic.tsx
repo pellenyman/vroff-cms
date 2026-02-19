@@ -74,9 +74,9 @@ function V2Header({ onOpenModal, scrolled }: { onOpenModal: () => void; scrolled
 
   const allNavItems = [
     { label: "Pris", href: "#pricing" },
-    { label: "Kundcase", href: "/case" },
+    { label: "Kundcase", href: "/kundcase" },
     { label: "__logo__", href: "#" },
-    { label: "FAQ", href: "/faq" },
+    { label: "Frågor", href: "/fragor" },
     { label: "Kontakt", href: "/kontakt" },
   ];
 
@@ -814,7 +814,7 @@ function V2FAQ({ cms }: { cms?: any }) {
           ))}
         </div>
 
-        <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-3 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors mt-4">
+        <a href="/fragor" className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-3 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors mt-4">
           Se alla frågor
         </a>
       </div>
@@ -899,7 +899,7 @@ function V2Cases({ cms }: { cms?: any }) {
                       <h3 className="text-[#5d0f0f] text-[32px] md:text-[60px] font-semibold leading-[0.9] tracking-[-2px] md:tracking-[-3px] whitespace-pre-wrap">{c.title}</h3>
                       <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5] mt-4 md:mt-6 max-w-[321px]">{c.desc}</p>
                     </div>
-                    <a href={`/case/${c.slug || c.name?.toLowerCase()}`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] text-center cursor-pointer hover:bg-[#5664e2] transition-colors">Läs hela story</a>
+                    <a href={`/kundcase/${c.slug || c.name?.toLowerCase()}`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] text-center cursor-pointer hover:bg-[#5664e2] transition-colors">Läs hela story</a>
                   </div>
                 </div>
               </div>

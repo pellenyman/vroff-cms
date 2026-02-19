@@ -31,5 +31,5 @@ export default function CatchAllPage({ params }: { params: Promise<{ slug: strin
 
   // Add breadcrumb for case stories (kundcase/katarina or just katarina)
   const isCaseSingle = (slug.length === 2 && slug[0] === "kundcase") || (slug.length === 1 && ["katarina", "lena", "erik"].includes(slug[0]));
-  return <PageRenderer sections={sections} breadcrumb={isCaseSingle ? { label: "Alla kundcase", href: "/case" } : undefined} />;
+  return <PageRenderer sections={sections} breadcrumb={isCaseSingle ? { label: "Alla kundcase", href: "/kundcase" } : undefined} />;
 }
