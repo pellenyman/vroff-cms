@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import svgPaths from "../svg-9z9wiml24b";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 function VroffLogo({ className }: { className?: string }) {
   return (
@@ -15,11 +16,7 @@ function VroffLogo({ className }: { className?: string }) {
   );
 }
 
-interface SharedHeaderProps {
-  cms?: any;
-}
-
-export default function SharedHeader({ cms }: SharedHeaderProps) {
+export default function SharedHeader({ cms }: { cms?: any }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -48,7 +45,8 @@ export default function SharedHeader({ cms }: SharedHeaderProps) {
   ];
 
   return (
-    <div className="sticky top-0 z-50 w-full flex justify-center pt-4 pointer-events-none px-4 md:px-0">
+    <div className="sticky top-0 z-50 w-full flex items-start justify-center pt-4 pointer-events-none px-4 md:px-0">
+      {/* Nav pill */}
       <div
         className={`bg-[#fafafa] rounded-[20px] pointer-events-auto transition-all duration-500 ease-out ${
           isScrolled ? "shadow-md" : ""
@@ -101,6 +99,11 @@ export default function SharedHeader({ cms }: SharedHeaderProps) {
             </button>
           </>
         )}
+      </div>
+
+      {/* Language switcher -- same row, right side, centered to nav height */}
+      <div className="absolute right-4 md:right-6 top-0 h-[86px] flex items-center pointer-events-auto">
+        <LanguageSwitcher variant="floating" />
       </div>
     </div>
   );
