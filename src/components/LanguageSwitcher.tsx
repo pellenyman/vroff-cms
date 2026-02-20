@@ -43,7 +43,7 @@ function buildLangUrl(langCode: string): string {
   return "/" + langCode + "/" + pathWithoutLang.join("/");
 }
 
-export default function LanguageSwitcher({ variant = "dark" }: { variant?: "dark" | "light" }) {
+export default function LanguageSwitcher({ variant = "floating" }: { variant?: "floating" | "footer" }) {
   const [languages, setLanguages] = useState<Language[]>([]);
   const [open, setOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState("sv");
@@ -74,38 +74,52 @@ export default function LanguageSwitcher({ variant = "dark" }: { variant?: "dark
 
   if (languages.length < 2) return null;
 
-  const isDark = variant === "dark";
-  const textColor = isDark ? "text-[#5d0f0f]" : "text-[#b4bbfd]";
-  const hoverBg = isDark ? "hover:bg-[#5d0f0f]/5" : "hover:bg-white/10";
-  const dropdownBg = isDark ? "bg-white" : "bg-[#3b0101]";
-  const activeBg = isDark ? "bg-[#5d0f0f]/10" : "bg-white/10";
-  const borderColor = isDark ? "border-[#5d0f0f]/10" : "border-[#b4bbfd]/20";
+  if (variant === "footer") {
+    return (
+      <div ref={ref} className="relative">
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="flex items-center gap-[5px] px-[6px] py-[4px] rounded-[6px] text-[#b4bbfd] hover:bg-white/10 transition-colors cursor-pointer text-[13px] font-semibold"
+        >
+          <GlobeIcon className="w-[15px] h-[15px]" />
+          <span>{currentLang.toUpperCase()}</span>
+          <svg width="8" height="5" fill="none" viewBox="0 0 8 5" className={`transition-transform ${open ? "rotate-180" : ""}`}>
+            <path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        {open && (
+          <div className="absolute bottom-full right-0 mb-[4px] bg-[#3b0101] rounded-[8px] border border-[#b4bbfd]/20 shadow-lg min-w-[130px] py-[3px] z-50">
+            {languages.map((lang) => (
+              <a key={lang.code} href={buildLangUrl(lang.code)}
+                className={`flex items-center gap-[8px] px-[12px] py-[7px] text-[#b4bbfd] text-[13px] font-medium hover:bg-white/10 transition-colors ${lang.code === currentLang ? "bg-white/10" : ""}`}
+                onClick={() => setOpen(false)}>
+                <span className="w-[18px] text-center font-semibold opacity-60">{lang.code.toUpperCase()}</span>
+                <span>{lang.name}</span>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="fixed top-4 right-4 z-[60]">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`flex items-center gap-[5px] px-[6px] py-[4px] rounded-[6px] ${textColor} ${hoverBg} transition-colors cursor-pointer text-[13px] font-semibold`}
+        className="w-[40px] h-[40px] bg-[#fafafa] rounded-full shadow-md flex items-center justify-center cursor-pointer hover:shadow-lg transition-shadow text-[#5d0f0f]"
+        aria-label="Byt språk"
       >
-        <GlobeIcon className="w-[15px] h-[15px]" />
-        <span>{currentLang.toUpperCase()}</span>
-        <svg width="8" height="5" fill="none" viewBox="0 0 8 5" className={`transition-transform ${open ? "rotate-180" : ""}`}>
-          <path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <GlobeIcon className="w-[18px] h-[18px]" />
       </button>
-
       {open && (
-        <div className={`absolute top-full right-0 mt-[2px] ${dropdownBg} rounded-[8px] border ${borderColor} shadow-lg min-w-[130px] py-[3px] z-50`}>
+        <div className="absolute top-full right-0 mt-[6px] bg-white rounded-[10px] border border-[#5d0f0f]/10 shadow-lg min-w-[140px] py-[4px] z-50">
           {languages.map((lang) => (
-            <a
-              key={lang.code}
-              href={buildLangUrl(lang.code)}
-              className={`flex items-center gap-[8px] px-[12px] py-[7px] ${textColor} text-[13px] font-medium ${hoverBg} transition-colors ${
-                lang.code === currentLang ? activeBg : ""
-              }`}
-              onClick={() => setOpen(false)}
-            >
+            <a key={lang.code} href={buildLangUrl(lang.code)}
+              className={`flex items-center gap-[8px] px-[14px] py-[8px] text-[#5d0f0f] text-[13px] font-medium hover:bg-[#5d0f0f]/5 transition-colors ${lang.code === currentLang ? "bg-[#5d0f0f]/10" : ""}`}
+              onClick={() => setOpen(false)}>
               <span className="w-[18px] text-center font-semibold opacity-60">{lang.code.toUpperCase()}</span>
               <span>{lang.name}</span>
             </a>

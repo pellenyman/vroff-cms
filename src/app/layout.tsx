@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import StoryblokProvider from "@/components/StoryblokProvider";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import "./globals.css";
 
 const quicksand = Quicksand({
@@ -24,6 +25,7 @@ export default function RootLayout({
       <html lang="sv">
         <body className={`${quicksand.variable} font-[family-name:var(--font-quicksand)] antialiased`}>
           {children}
+          <LanguageSwitcher variant="floating" />
         </body>
       </html>
     </StoryblokProvider>

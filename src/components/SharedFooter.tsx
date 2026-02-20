@@ -42,7 +42,7 @@ export default function SharedFooter({ cms }: SharedFooterProps) {
         )}
         <div className="pt-[46px] border-t border-[#b4bbfd]/40 flex items-center justify-between">
           <VroffLogoLarge className="w-[160px] h-[48px] text-[#6674f2]" />
-          <LanguageSwitcher variant="light" />
+          <LanguageSwitcher variant="footer" />
         </div>
       </div>
     </footer>

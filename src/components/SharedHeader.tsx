@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import svgPaths from "../svg-9z9wiml24b";
-import LanguageSwitcher from "./LanguageSwitcher";
 
 function VroffLogo({ className }: { className?: string }) {
   return (
@@ -18,12 +17,11 @@ function VroffLogo({ className }: { className?: string }) {
 
 interface SharedHeaderProps {
   cms?: any;
-  scrolled?: boolean;
 }
 
-export default function SharedHeader({ cms, scrolled = false }: SharedHeaderProps) {
+export default function SharedHeader({ cms }: SharedHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(scrolled);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
@@ -55,7 +53,7 @@ export default function SharedHeader({ cms, scrolled = false }: SharedHeaderProp
         className={`bg-[#fafafa] rounded-[20px] pointer-events-auto transition-all duration-500 ease-out ${
           isScrolled ? "shadow-md" : ""
         } ${menuOpen
-          ? "w-full md:w-[542px] flex flex-col md:flex-row items-center gap-0 md:gap-[15px] justify-center px-0"
+          ? "w-full md:w-[600px] flex flex-col md:flex-row items-center gap-0 md:gap-[15px] justify-center px-0"
           : "w-[calc(100%-32px)] md:w-[351px] h-[70px] flex items-center justify-between px-[30px]"
         }`}
       >
@@ -71,15 +69,14 @@ export default function SharedHeader({ cms, scrolled = false }: SharedHeaderProp
                   {item.label}
                 </button>
               ))}
-              <div className="mt-2"><LanguageSwitcher variant="dark" /></div>
               <button type="button" onClick={() => setMenuOpen(false)} className="mt-1 py-2 text-[#5d0f0f]/40 text-[14px] cursor-pointer">
                 Stäng
               </button>
             </div>
-            <div className="hidden md:flex items-center gap-[15px] h-[70px]">
+            <div className="hidden md:flex items-center gap-[20px] h-[70px] px-[25px]">
               {allNavItems.map((item: any) =>
                 item.label === "__logo__" ? (
-                  <button key="logo" type="button" onClick={() => goTo("#")} className="cursor-pointer shrink-0 p-[14px] flex items-center justify-center">
+                  <button key="logo" type="button" onClick={() => goTo("#")} className="cursor-pointer shrink-0 px-[16px] flex items-center justify-center">
                     <VroffLogo className="w-[86px] h-[25.8px] text-[#5d0f0f]" />
                   </button>
                 ) : (
@@ -89,7 +86,6 @@ export default function SharedHeader({ cms, scrolled = false }: SharedHeaderProp
                   </button>
                 )
               )}
-              <LanguageSwitcher variant="dark" />
             </div>
           </>
         ) : (
