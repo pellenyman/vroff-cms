@@ -11,17 +11,33 @@ interface CmsPageProps {
   breadcrumb?: { label: string; href: string };
 }
 
+function findSection(sections: any[] | null | undefined, component: string): any | null {
+  if (!sections) return null;
+  return sections.find((s: any) => s.component === component) || null;
+}
+
 export default function CmsPage({ storySlug, language, breadcrumb }: CmsPageProps) {
   const [sections, setSections] = useState<any[] | null>(null);
+  const [globalData, setGlobalData] = useState<any[] | null>(null);
   const [error, setError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const token = process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_API_ACCESS_TOKEN;
+  const langParam = language ? `&language=${language}` : "";
+
   useEffect(() => {
-    const langParam = language ? `&language=${language}` : "";
-    fetch(`https://api.storyblok.com/v2/cdn/stories/${storySlug}?token=${process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_API_ACCESS_TOKEN}&version=draft${langParam}`)
+    fetch(`https://api.storyblok.com/v2/cdn/stories/${storySlug}?token=${token}&version=draft${langParam}`)
       .then(r => { if (!r.ok) throw new Error(); return r.json(); })
       .then(d => setSections(d.story?.content?.body || null))
       .catch(() => setError(true));
+  }, [storySlug, language]);
+
+  useEffect(() => {
+    if (storySlug === "home") return;
+    fetch(`https://api.storyblok.com/v2/cdn/stories/home?token=${token}&version=draft${langParam}`)
+      .then(r => r.json())
+      .then(d => setGlobalData(d.story?.content?.body || null))
+      .catch(() => {});
   }, [storySlug, language]);
 
   if (error) {
@@ -43,6 +59,9 @@ export default function CmsPage({ storySlug, language, breadcrumb }: CmsPageProp
     );
   }
 
+  const navCms = findSection(globalData, "navigation");
+  const footerCms = findSection(globalData, "footer");
+
   if (!sections) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
@@ -54,5 +73,5 @@ export default function CmsPage({ storySlug, language, breadcrumb }: CmsPageProp
     );
   }
 
-  return <PageRenderer sections={sections} breadcrumb={breadcrumb} />;
+  return <PageRenderer sections={sections} breadcrumb={breadcrumb} navCms={navCms} footerCms={footerCms} />;
 }

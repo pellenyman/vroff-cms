@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import svgPaths from "../svg-9z9wiml24b";
-import LanguageSwitcher from "./LanguageSwitcher";
+import SharedHeader from "./SharedHeader";
+import SharedFooter from "./SharedFooter";
 
 const imgAvatar = "/assets/283a376b0fafb9874fefe43652d98fad3cdad31c.png";
 const imgCase = "/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png";
@@ -211,43 +212,6 @@ function ContactFormSection({ blok }: { blok: any }) {
   );
 }
 
-function FooterSection() {
-  const cols = [
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum", "Praesentium", "praesentium.", "Numquam unde"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum", "Praesentium"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum", "Praesentium", "praesentium.", "Numquam unde"] },
-    { title: "Neque natus", links: ["Suisquam", "Muasi nostrum", "praesentium.", "Unde"] },
-  ];
-  return (
-    <footer className="bg-[#5d0f0f] w-full py-[100px] px-6 md:px-[120px]">
-      <div className="max-w-[1200px] mx-auto flex flex-col gap-[63px]">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-[16px] tracking-[-0.32px]">
-          {cols.map((col, i) => (
-            <div key={i} className="flex flex-col gap-1 leading-[1.8]">
-              <p className="text-[#fafafa] font-semibold">{col.title}</p>
-              {col.links.map((l, j) => (
-                <p key={j} className="text-[#b4bbfd] font-medium cursor-pointer hover:text-white transition-colors duration-200">{l}</p>
-              ))}
-            </div>
-          ))}
-        </div>
-        <div className="pt-[46px] border-t border-[#b4bbfd]/40 flex items-center justify-between">
-          <svg className="w-[160px] h-[48px] text-[#6674f2]" fill="none" viewBox="0 0 1200 360">
-            <path d={svgPaths.p28c08800} fill="currentColor" />
-            <path d={svgPaths.p1b850880} fill="currentColor" />
-            <path d={svgPaths.p1f099800} fill="currentColor" />
-            <path d={svgPaths.p1934e700} fill="currentColor" />
-            <path d={svgPaths.p2b9be440} fill="currentColor" />
-          </svg>
-          <LanguageSwitcher variant="light" />
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 /* Block router */
 const blockComponents: Record<string, React.FC<{ blok: any }>> = {
   hero: HeroSection,
@@ -260,70 +224,29 @@ const blockComponents: Record<string, React.FC<{ blok: any }>> = {
   footer: ({ blok }) => <FooterSection />,
 };
 
-export default function PageRenderer({ sections, breadcrumb }: { sections: any[]; breadcrumb?: { label: string; href: string } }) {
-  const [navOpen, setNavOpen] = useState(false);
-
+export default function PageRenderer({ sections, breadcrumb, navCms, footerCms }: { sections: any[]; breadcrumb?: { label: string; href: string }; navCms?: any; footerCms?: any }) {
   return (
     <div className="w-full min-h-screen bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
-      {/* Nav */}
-      <nav className="bg-[#fafafa] w-full py-4 px-6 md:px-[120px] flex flex-wrap items-center justify-between">
-        <a href="/" className="text-[#5d0f0f] cursor-pointer">
-          <svg className="w-[86px] h-[25.8px]" fill="none" viewBox="0 0 86 25.8">
-            <path d={svgPaths.pfbf4c80} fill="currentColor" />
-            <path d={svgPaths.pea9c280} fill="currentColor" />
-            <path d={svgPaths.p35edc900} fill="currentColor" />
-            <path d={svgPaths.p2a2071c0} fill="currentColor" />
-            <path d={svgPaths.p294dfb00} fill="currentColor" />
-          </svg>
-        </a>
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-[24px]">
-          <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Hem</a>
-          <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Frågor</a>
-          <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kundcase</a>
-          <a href="/contact" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kontakt</a>
-          <LanguageSwitcher variant="dark" />
-        </div>
-        {/* Mobile hamburger */}
-        <button type="button" onClick={() => setNavOpen(!navOpen)} className="md:hidden cursor-pointer" aria-label="Meny">
-          <svg width="20" height="12" fill="none" viewBox="0 0 20 12.5">
-            <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
-            <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
-          </svg>
-        </button>
-        {/* Mobile nav dropdown */}
-        {navOpen && (
-          <div className="md:hidden w-full flex flex-col items-center gap-2 pt-4 pb-2">
-            <a href="/" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Hem</a>
-            <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Frågor</a>
-            <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kundcase</a>
-            <a href="/contact" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kontakt</a>
-            <LanguageSwitcher variant="dark" />
-          </div>
-        )}
-      </nav>
+      <SharedHeader cms={navCms} />
 
-      {/* Breadcrumb */}
       {breadcrumb && (
-        <div className="bg-[#f5efdf] w-full px-6 md:px-[120px] py-3">
+        <div className="bg-[#f5efdf] w-full px-6 md:px-[120px] py-3 -mt-[10px]">
           <div className="max-w-[1200px] mx-auto">
             <a href={breadcrumb.href} className="text-[#5d0f0f]/60 text-[14px] font-medium hover:text-[#5d0f0f] transition-colors cursor-pointer">
-              ← {breadcrumb.label}
+              &larr; {breadcrumb.label}
             </a>
           </div>
         </div>
       )}
 
-      {/* Sections */}
       {sections.map((blok: any) => {
-        if (blok.component === "footer") return null;
+        if (blok.component === "footer" || blok.component === "navigation") return null;
         const Component = blockComponents[blok.component];
         if (!Component) return null;
         return <Component key={blok._uid} blok={blok} />;
       })}
 
-      {/* Footer always rendered */}
-      <FooterSection />
+      <SharedFooter cms={footerCms} />
     </div>
   );
 }
