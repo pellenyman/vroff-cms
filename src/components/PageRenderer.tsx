@@ -26,7 +26,7 @@ function HeroSection({ blok }: { blok: any }) {
   const bgImg = blok.background_image?.filename || heroImages[blok.headline] || defaultHeroImg;
 
   return (
-    <section className="relative w-full h-[600px] md:h-[700px] flex items-center justify-center overflow-hidden -mt-[90px]">
+    <section className="relative w-full h-[600px] md:h-[700px] flex items-center justify-center overflow-hidden">
       <img src={bgImg} alt={blok.headline || ""} className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 text-center flex flex-col items-center gap-[20px] md:gap-[30px] pt-[80px] px-6">

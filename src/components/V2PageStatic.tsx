@@ -77,7 +77,7 @@ function PlayIcon({ className }: { className?: string }) {
    ═══════════════════════════════════════════════════ */
 function V2Hero({ onOpenModal, cms }: { onOpenModal: () => void; cms: any }) {
   return (
-    <section className="relative w-full h-[700px] md:h-[800px] flex items-center justify-center overflow-hidden -mt-[90px]">
+    <section className="relative w-full h-[700px] md:h-[800px] flex items-center justify-center overflow-hidden">
       <img src={cms?.background_image?.filename || imgHero} alt="Vroff hero" className="absolute inset-0 w-full h-full object-cover" />
       <div className="relative z-10 flex flex-col items-center gap-[30px] pt-[80px] text-center px-6">
         <h1 className="text-[#fafafa] text-[40px] md:text-[76px] font-semibold leading-[1.01] tracking-[-2px] md:tracking-[-3.8px] max-w-[759px]">

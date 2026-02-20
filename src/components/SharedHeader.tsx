@@ -48,7 +48,7 @@ export default function SharedHeader({ cms }: { cms?: any }) {
   ];
 
   return (
-    <div className="sticky top-0 z-50 w-full flex items-start justify-center pt-4 pointer-events-none px-4 md:px-0">
+    <div className="fixed top-0 left-0 right-0 z-50 flex items-start justify-center pt-4 pointer-events-none px-4 md:px-0">
       <div
         className={`bg-[#fafafa] rounded-[20px] pointer-events-auto transition-all duration-500 ease-out ${
           isScrolled ? "shadow-md" : ""
