@@ -3,12 +3,14 @@
 import { use } from "react";
 import CmsPage from "@/components/CmsPage";
 
-const SUPPORTED_LANGS = ["en"];
+function isLangCode(s: string): boolean {
+  return s.length === 2 && /^[a-z]{2}$/.test(s) && s !== "sv";
+}
 
 export default function CatchAllPage({ params }: { params: Promise<{ slug: string[] }> }) {
   const { slug } = use(params);
 
-  const lang = SUPPORTED_LANGS.includes(slug[0]) ? slug[0] : null;
+  const lang = isLangCode(slug[0]) ? slug[0] : null;
   const pathParts = lang ? slug.slice(1) : slug;
   const storySlug = pathParts.join("/").toLowerCase() || "home";
 
