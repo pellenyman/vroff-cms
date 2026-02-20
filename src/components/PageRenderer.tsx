@@ -24,14 +24,14 @@ function HeroSection({ blok }: { blok: any }) {
   const bgImg = blok.background_image?.filename || heroImages[blok.headline] || defaultHeroImg;
 
   return (
-    <section className="relative w-full h-[300px] md:h-[450px] flex items-center justify-center overflow-hidden">
+    <section className="relative w-full h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden -mt-[90px]">
       <img src={bgImg} alt={blok.headline || ""} className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute inset-0 bg-[#3b0101]/70" />
-      <div className="relative z-10 text-center flex flex-col items-center gap-[16px] md:gap-[20px] px-6">
-        <h1 className="text-[#fafafa] text-[32px] md:text-[64px] font-semibold tracking-[-1.5px] md:tracking-[-2px] leading-[1.05]">{blok.headline}</h1>
-        {blok.subtext && <p className="text-white/80 text-[14px] md:text-[20px] font-medium max-w-[600px]">{blok.subtext}</p>}
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="relative z-10 text-center flex flex-col items-center gap-[20px] md:gap-[30px] pt-[80px] px-6">
+        <h1 className="text-[#fafafa] text-[36px] md:text-[64px] font-semibold tracking-[-2px] md:tracking-[-3px] leading-[1.05] max-w-[700px]">{blok.headline}</h1>
+        {blok.subtext && <p className="text-white text-[16px] md:text-[20px] font-medium max-w-[600px]">{blok.subtext}</p>}
         {blok.cta_text && (
-          <a href={blok.cta_link?.cached_url || "/contact"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[14px] md:text-[16px] mt-2 md:mt-4 hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
+          <a href={blok.cta_link?.cached_url || "/contact"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] mt-2 hover:bg-[#5664e2] transition-colors cursor-pointer">{blok.cta_text}</a>
         )}
       </div>
     </section>

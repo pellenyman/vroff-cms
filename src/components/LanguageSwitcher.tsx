@@ -105,7 +105,7 @@ export default function LanguageSwitcher({ variant = "floating" }: { variant?: "
   }
 
   return (
-    <div ref={ref} className="fixed top-4 right-4 z-[60]">
+    <div ref={ref} className="fixed top-[19px] right-4 md:right-6 z-[60]">
       <button
         type="button"
         onClick={() => setOpen(!open)}
