@@ -41,7 +41,7 @@ function HeroSection({ blok }: { blok: any }) {
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 text-center flex flex-col items-center gap-[20px] md:gap-[30px] pt-[80px] px-6">
         <h1 className="text-[#fafafa] text-[36px] md:text-[64px] font-semibold tracking-[-2px] md:tracking-[-3px] leading-[1.05] max-w-[700px]">{blok.headline}</h1>
-        {blok.subtext && <p className="text-white text-[16px] md:text-[20px] font-medium max-w-[600px]">{blok.subtext}</p>}
+        {blok.subtext && <RichText content={blok.subtext} className="text-white text-[16px] md:text-[20px] font-medium max-w-[600px] [&_p]:mb-0" />}
         {blok.cta_text && (
           <a href={localizeHref(blok.cta_link?.cached_url || "/contact", lang)} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] mt-2 hover:bg-[#5664e2] transition-colors cursor-pointer">{blok.cta_text}</a>
         )}
