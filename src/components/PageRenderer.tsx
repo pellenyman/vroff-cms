@@ -1,13 +1,23 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import svgPaths from "../svg-9z9wiml24b";
 import SharedHeader from "./SharedHeader";
 import { useLang, localizeHref } from "@/lib/lang";
 import SharedFooter from "./SharedFooter";
+import { render } from "storyblok-rich-text-react-renderer";
 
 const imgAvatar = "/assets/283a376b0fafb9874fefe43652d98fad3cdad31c.png";
 const imgCase = "/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png";
+
+function RichText({ content, className }: { content: any; className?: string }) {
+  if (!content) return null;
+  if (typeof content === "string") return <p className={className}>{content}</p>;
+  if (typeof content === "object" && content.type === "doc") {
+    return <div className={className}>{render(content)}</div>;
+  }
+  return <p className={className}>{String(content)}</p>;
+}
 
 /* Shared section renderer for CMS pages (FAQ, Case, Kontakt) */
 
@@ -53,7 +63,7 @@ function ContentSection({ blok, index }: { blok: any; index?: number }) {
           </div>
           <div className="w-full md:w-1/2 flex flex-col gap-[16px] md:gap-[20px]">
             {blok.headline && <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px] leading-[1.1]">{blok.headline}</h2>}
-            {blok.body && <p className="text-[#5d0f0f] text-[16px] md:text-[18px] font-medium leading-[1.7]">{blok.body}</p>}
+            <RichText content={blok.body} className="text-[#5d0f0f] text-[16px] md:text-[18px] font-medium leading-[1.7] [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_strong]:font-bold [&_a]:text-[#6674f2] [&_a]:underline" />
           </div>
         </div>
       </section>
@@ -67,7 +77,7 @@ function ContentSection({ blok, index }: { blok: any; index?: number }) {
           {blok.headline && <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px] leading-[1.1]">{blok.headline}</h2>}
         </div>
         <div className="md:w-[60%]">
-          {blok.body && <p className="text-[#5d0f0f] text-[16px] md:text-[18px] font-medium leading-[1.7]">{blok.body}</p>}
+          <RichText content={blok.body} className="text-[#5d0f0f] text-[16px] md:text-[18px] font-medium leading-[1.7] [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_strong]:font-bold [&_a]:text-[#6674f2] [&_a]:underline" />
         </div>
       </div>
     </section>
@@ -157,7 +167,7 @@ function FaqSection({ blok }: { blok: any }) {
   );
 }
 
-function FaqItem({ q, a, isOpen, onClick, isLast }: { q: string; a: string; isOpen: boolean; onClick: () => void; isLast: boolean }) {
+function FaqItem({ q, a, isOpen, onClick, isLast }: { q: string; a: any; isOpen: boolean; onClick: () => void; isLast: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [h, setH] = useState(0);
   useEffect(() => { if (ref.current) setH(isOpen ? ref.current.scrollHeight : 0); }, [isOpen]);
@@ -169,7 +179,7 @@ function FaqItem({ q, a, isOpen, onClick, isLast }: { q: string; a: string; isOp
       </button>
       <div className="overflow-hidden transition-[max-height,opacity] duration-400" style={{ maxHeight: h, opacity: isOpen ? 1 : 0 }}>
         <div ref={ref} className="pb-[20px] pl-[20px] pr-[60px] md:pr-[200px]">
-          <p className="text-[#9b3316] text-[16px] md:text-[20px] font-medium leading-[1.5]">{a}</p>
+          <RichText content={a} className="text-[#9b3316] text-[16px] md:text-[20px] font-medium leading-[1.5] [&_p]:mb-2 [&_a]:underline" />
         </div>
       </div>
     </div>
