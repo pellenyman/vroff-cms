@@ -26,7 +26,7 @@ function HeroSection({ blok }: { blok: any }) {
   const bgImg = blok.background_image?.filename || heroImages[blok.headline] || defaultHeroImg;
 
   return (
-    <section className="relative w-full h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden -mt-[90px]">
+    <section className="relative w-full h-[600px] md:h-[700px] flex items-center justify-center overflow-hidden -mt-[90px]">
       <img src={bgImg} alt={blok.headline || ""} className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 text-center flex flex-col items-center gap-[20px] md:gap-[30px] pt-[80px] px-6">
@@ -40,17 +40,35 @@ function HeroSection({ blok }: { blok: any }) {
   );
 }
 
-function ContentSection({ blok }: { blok: any }) {
-  return (
-    <section className="bg-[#f5efdf] w-full py-[80px] px-6 md:px-[120px]">
-      <div className="max-w-[800px] mx-auto flex flex-col gap-[24px]">
-        {blok.headline && <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px]">{blok.headline}</h2>}
-        {blok.body && <p className="text-[#5d0f0f] text-[16px] md:text-[20px] font-medium leading-[1.6]">{blok.body}</p>}
-        {blok.image?.filename && (
-          <div className="rounded-[10px] overflow-hidden mt-4">
-            <img src={blok.image.filename} alt={blok.headline || ""} className="w-full h-auto object-cover" />
+function ContentSection({ blok, index }: { blok: any; index?: number }) {
+  const hasImage = !!blok.image?.filename;
+  const isEven = (index ?? 0) % 2 === 0;
+
+  if (hasImage) {
+    return (
+      <section className="bg-[#f5efdf] w-full py-[60px] md:py-[100px] px-6 md:px-[120px]">
+        <div className={`max-w-[1200px] mx-auto flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} gap-[30px] md:gap-[60px] items-center`}>
+          <div className="w-full md:w-1/2 rounded-[10px] overflow-hidden">
+            <img src={blok.image.filename} alt={blok.headline || ""} className="w-full h-[300px] md:h-[400px] object-cover" />
           </div>
-        )}
+          <div className="w-full md:w-1/2 flex flex-col gap-[16px] md:gap-[20px]">
+            {blok.headline && <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px] leading-[1.1]">{blok.headline}</h2>}
+            {blok.body && <p className="text-[#5d0f0f] text-[16px] md:text-[18px] font-medium leading-[1.7]">{blok.body}</p>}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="bg-[#f5efdf] w-full py-[60px] md:py-[100px] px-6 md:px-[120px]">
+      <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row gap-[20px] md:gap-[80px]">
+        <div className="md:w-[40%] shrink-0">
+          {blok.headline && <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px] leading-[1.1]">{blok.headline}</h2>}
+        </div>
+        <div className="md:w-[60%]">
+          {blok.body && <p className="text-[#5d0f0f] text-[16px] md:text-[18px] font-medium leading-[1.7]">{blok.body}</p>}
+        </div>
       </div>
     </section>
   );
@@ -220,7 +238,7 @@ function ContactFormSection({ blok }: { blok: any }) {
 }
 
 /* Block router */
-const blockComponents: Record<string, React.FC<{ blok: any }>> = {
+const blockComponents: Record<string, React.FC<{ blok: any; index?: number }>> = {
   hero: HeroSection,
   content_block: ContentSection,
   cta: CtaSection,
@@ -245,11 +263,11 @@ export default function PageRenderer({ sections, breadcrumb, navCms, footerCms }
         </div>
       )}
 
-      {sections.map((blok: any) => {
+      {sections.map((blok: any, idx: number) => {
         if (blok.component === "footer" || blok.component === "navigation") return null;
         const Component = blockComponents[blok.component];
         if (!Component) return null;
-        return <Component key={blok._uid} blok={blok} />;
+        return <Component key={blok._uid} blok={blok} index={idx} />;
       })}
 
       <SharedFooter cms={footerCms} />
