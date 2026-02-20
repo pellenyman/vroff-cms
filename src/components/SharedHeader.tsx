@@ -103,7 +103,7 @@ export default function SharedHeader({ cms }: { cms?: any }) {
         )}
       </div>
 
-      <div className="absolute right-4 md:right-6 top-0 h-[86px] flex items-center pointer-events-auto">
+      <div className="absolute right-4 md:right-6 pointer-events-auto" style={{ top: "calc(1rem + 11px)" }}>
         <LanguageSwitcher variant="floating" />
       </div>
     </div>

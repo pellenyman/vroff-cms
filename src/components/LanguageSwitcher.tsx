@@ -109,10 +109,10 @@ export default function LanguageSwitcher({ variant = "floating" }: { variant?: "
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-[40px] h-[40px] bg-[#fafafa] rounded-full shadow-md flex items-center justify-center cursor-pointer hover:shadow-lg transition-shadow text-[#5d0f0f]"
+        className="w-[48px] h-[48px] bg-[#fafafa] rounded-full shadow-md flex items-center justify-center cursor-pointer hover:shadow-lg transition-shadow text-[#5d0f0f]"
         aria-label="Byt språk"
       >
-        <GlobeIcon className="w-[18px] h-[18px]" />
+        <GlobeIcon className="w-[20px] h-[20px]" />
       </button>
       {open && (
         <div className="absolute top-full right-0 mt-[6px] bg-white rounded-[10px] border border-[#5d0f0f]/10 shadow-lg min-w-[140px] py-[4px] z-50">
