@@ -2,6 +2,7 @@
 
 import svgPaths from "../svg-9z9wiml24b";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useLang, localizeHref } from "@/lib/lang";
 
 function VroffLogoLarge({ className }: { className?: string }) {
   return (
@@ -15,14 +16,11 @@ function VroffLogoLarge({ className }: { className?: string }) {
   );
 }
 
-interface SharedFooterProps {
-  cms?: any;
-}
-
-export default function SharedFooter({ cms }: SharedFooterProps) {
+export default function SharedFooter({ cms }: { cms?: any }) {
+  const lang = useLang();
   const columns = (cms?.columns || []).map((col: any) => ({
     title: col.title,
-    links: (col.links || []).map((l: any) => ({ label: l.label, url: l.url })),
+    links: (col.links || []).map((l: any) => ({ label: l.label, url: localizeHref(l.url || "", lang) })),
   }));
 
   return (

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import svgPaths from "../svg-9z9wiml24b";
 import SharedHeader from "./SharedHeader";
+import { useLang, localizeHref } from "@/lib/lang";
 import SharedFooter from "./SharedFooter";
 
 const imgAvatar = "/assets/283a376b0fafb9874fefe43652d98fad3cdad31c.png";
@@ -21,6 +22,7 @@ const heroImages: Record<string, string> = {
 const defaultHeroImg = "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80";
 
 function HeroSection({ blok }: { blok: any }) {
+  const lang = useLang();
   const bgImg = blok.background_image?.filename || heroImages[blok.headline] || defaultHeroImg;
 
   return (
@@ -31,7 +33,7 @@ function HeroSection({ blok }: { blok: any }) {
         <h1 className="text-[#fafafa] text-[36px] md:text-[64px] font-semibold tracking-[-2px] md:tracking-[-3px] leading-[1.05] max-w-[700px]">{blok.headline}</h1>
         {blok.subtext && <p className="text-white text-[16px] md:text-[20px] font-medium max-w-[600px]">{blok.subtext}</p>}
         {blok.cta_text && (
-          <a href={blok.cta_link?.cached_url || "/contact"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] mt-2 hover:bg-[#5664e2] transition-colors cursor-pointer">{blok.cta_text}</a>
+          <a href={localizeHref(blok.cta_link?.cached_url || "/contact", lang)} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] mt-2 hover:bg-[#5664e2] transition-colors cursor-pointer">{blok.cta_text}</a>
         )}
       </div>
     </section>
@@ -55,13 +57,14 @@ function ContentSection({ blok }: { blok: any }) {
 }
 
 function CtaSection({ blok }: { blok: any }) {
+  const lang = useLang();
   return (
     <section className="bg-[#b4bbfd] w-full py-[80px] px-6 md:px-[120px]">
       <div className="max-w-[800px] mx-auto text-center flex flex-col items-center gap-[20px]">
         <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px]">{blok.headline}</h2>
         {blok.description && <p className="text-[#5d0f0f] text-[16px] md:text-[20px] font-medium">{blok.description}</p>}
         {blok.cta_text && (
-          <a href={blok.cta_link?.cached_url || "/contact"} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
+          <a href={localizeHref(blok.cta_link?.cached_url || "/contact", lang)} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
         )}
       </div>
     </section>
@@ -77,9 +80,10 @@ function slugify(str: string): string {
 }
 
 function FaqSection({ blok }: { blok: any }) {
+  const lang = useLang();
   const allItems = blok.items || [];
-  const allLabel = blok.all_label || "Alla";
-  const countSuffix = blok.count_suffix || "frågor";
+  const allLabel = blok.all_label || "All";
+  const countSuffix = blok.count_suffix || "questions";
   const categoryNames = [allLabel, ...Array.from(new Set(allItems.map((f: any) => f.category).filter(Boolean))) as string[]];
 
   const [active, setActive] = useState(allLabel);
@@ -113,7 +117,7 @@ function FaqSection({ blok }: { blok: any }) {
         {categoryNames.length > 1 && (
           <div className="flex flex-wrap gap-[8px] md:gap-[12px]">
             {categoryNames.map((cat: string) => (
-              <a key={cat} href={cat === allLabel ? "/faq" : `/faq?category=${slugify(cat)}`}
+              <a key={cat} href={localizeHref(cat === allLabel ? "/faq" : `/faq?category=${slugify(cat)}`, lang)}
                 onClick={(e) => { e.preventDefault(); selectCategory(cat); }}
                 className={`px-[16px] md:px-[20px] py-[8px] rounded-[50px] text-[13px] md:text-[14px] font-semibold cursor-pointer transition-colors ${
                   active === cat ? "bg-[#5d0f0f] text-[#fafafa]" : "bg-white text-[#5d0f0f] hover:bg-[#5d0f0f]/10"
@@ -122,7 +126,7 @@ function FaqSection({ blok }: { blok: any }) {
           </div>
         )}
 
-        <p className="text-[#5d0f0f]/50 text-[14px] font-medium">{items.length} {countSuffix}{active !== allLabel ? ` i "${active}"` : ""}</p>
+        <p className="text-[#5d0f0f]/50 text-[14px] font-medium">{items.length} {countSuffix}{active !== allLabel ? ` — ${active}` : ""}</p>
 
         {/* FAQ items */}
         <div className="flex flex-col">
@@ -155,6 +159,7 @@ function FaqItem({ q, a, isOpen, onClick, isLast }: { q: string; a: string; isOp
 }
 
 function CaseStudySection({ blok }: { blok: any }) {
+  const lang = useLang();
   const items = blok.items || [];
   return (
     <section className="bg-[#ede1c9] w-full py-[60px] md:py-[80px] px-6 md:px-[120px]">
@@ -168,7 +173,7 @@ function CaseStudySection({ blok }: { blok: any }) {
               </div>
               <h3 className="text-[#5d0f0f] text-[20px] md:text-[24px] font-semibold whitespace-pre-wrap">{c.title}</h3>
               <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5]">{c.description}</p>
-              <a href={c.link?.cached_url || `/case/${c.name?.toLowerCase()}`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[24px] py-[10px] rounded-[15px] w-fit hover:bg-[#5664e2] transition-colors">{c.button_text || "Läs mer"}</a>
+              <a href={localizeHref(c.link?.cached_url || `/case/${c.slug || c.name?.toLowerCase()}`, lang)} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[24px] py-[10px] rounded-[15px] w-fit hover:bg-[#5664e2] transition-colors">{c.button_text}</a>
             </div>
           ))}
         </div>

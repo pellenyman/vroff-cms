@@ -6,6 +6,7 @@ import { PlusIcon, PlusSmallIcon } from "./Icons";
 import PricingComparison from "./PricingComparison";
 import SharedHeader from "./SharedHeader";
 import SharedFooter from "./SharedFooter";
+import { useLang, localizeHref } from "@/lib/lang";
 
 const BASE = "";
 const imgHero = `${BASE}/assets/a4d848fc8e2e4a83a5179b20fc12c3245deb2b64.png`;
@@ -615,6 +616,7 @@ function V2Pricing({ onOpenModal, cms }: { onOpenModal: () => void; cms: any }) 
    FAQ – fully CMS-driven accordion
    ═══════════════════════════════════════════════════ */
 function V2FAQ({ cms }: { cms: any }) {
+  const lang = useLang();
   const fItems = (cms?.items || []).map((f: any) => ({ q: f.question, a: f.answer }));
   const [open, setOpen] = useState(2);
 
@@ -630,7 +632,7 @@ function V2FAQ({ cms }: { cms: any }) {
           ))}
         </div>
         {cms?.cta_text && (
-          <a href={cms?.cta_link || "/faq"} className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-3 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors mt-4">
+          <a href={localizeHref(cms?.cta_link || "/faq", lang)} className="text-[#5d0f0f] text-[16px] font-semibold border border-[#5d0f0f] rounded-[50px] px-6 py-3 self-start cursor-pointer hover:bg-[#5d0f0f] hover:text-[#fafafa] transition-colors mt-4">
             {cms.cta_text}
           </a>
         )}
@@ -665,6 +667,7 @@ function FAQItemV2({ q, a, isOpen, onClick, isLast }: { q: string; a: string; is
    CASES – fully CMS-driven carousel
    ═══════════════════════════════════════════════════ */
 function V2Cases({ cms }: { cms: any }) {
+  const lang = useLang();
   const cases = (cms?.items || []).map((c: any) => ({
     name: c.name,
     title: c.title,
@@ -716,7 +719,7 @@ function V2Cases({ cms }: { cms: any }) {
                       <h3 className="text-[#5d0f0f] text-[32px] md:text-[60px] font-semibold leading-[0.9] tracking-[-2px] md:tracking-[-3px] whitespace-pre-wrap">{c.title}</h3>
                       <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5] mt-4 md:mt-6 max-w-[321px]">{c.desc}</p>
                     </div>
-                    <a href={`/case/${c.slug}`} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] text-center cursor-pointer hover:bg-[#5664e2] transition-colors">{c.buttonText}</a>
+                    <a href={localizeHref(`/case/${c.slug}`, lang)} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] text-center cursor-pointer hover:bg-[#5664e2] transition-colors">{c.buttonText}</a>
                   </div>
                 </div>
               </div>

@@ -13,7 +13,8 @@ export default function CatchAllPage({ params }: { params: Promise<{ slug: strin
   const storySlug = pathParts.join("/") || "home";
 
   const isCaseSingle = pathParts.length === 2 && pathParts[0] === "case";
-  const breadcrumb = isCaseSingle ? { label: "Alla kundcase", href: "/case" } : undefined;
+  const bcHref = lang ? `/${lang}/case` : "/case";
+  const breadcrumb = isCaseSingle ? { label: "← Case", href: bcHref } : undefined;
 
   return <CmsPage storySlug={storySlug} language={lang} breadcrumb={breadcrumb} />;
 }

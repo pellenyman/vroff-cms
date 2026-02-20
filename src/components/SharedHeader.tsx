@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import svgPaths from "../svg-9z9wiml24b";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useLang, localizeHref } from "@/lib/lang";
 
 function VroffLogo({ className }: { className?: string }) {
   return (
@@ -19,6 +20,7 @@ function VroffLogo({ className }: { className?: string }) {
 export default function SharedHeader({ cms }: { cms?: any }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const lang = useLang();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
@@ -32,8 +34,9 @@ export default function SharedHeader({ cms }: { cms?: any }) {
 
   const goTo = (href: string) => {
     setMenuOpen(false);
-    if (href === "#") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
-    if (href.startsWith("/")) { window.location.href = href; return; }
+    const resolved = localizeHref(href, lang);
+    if (resolved === "#" || href === "#") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    if (resolved.startsWith("/") || resolved.startsWith("http")) { window.location.href = resolved; return; }
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -46,7 +49,6 @@ export default function SharedHeader({ cms }: { cms?: any }) {
 
   return (
     <div className="sticky top-0 z-50 w-full flex items-start justify-center pt-4 pointer-events-none px-4 md:px-0">
-      {/* Nav pill */}
       <div
         className={`bg-[#fafafa] rounded-[20px] pointer-events-auto transition-all duration-500 ease-out ${
           isScrolled ? "shadow-md" : ""
@@ -58,7 +60,7 @@ export default function SharedHeader({ cms }: { cms?: any }) {
         {menuOpen ? (
           <>
             <div className="flex md:hidden flex-col items-center w-full py-4 gap-2">
-              <button type="button" onClick={() => goTo("#")} className="cursor-pointer p-3">
+              <button type="button" onClick={() => goTo("/")} className="cursor-pointer p-3">
                 <VroffLogo className="w-[86px] h-[25.8px] text-[#5d0f0f]" />
               </button>
               {allNavItems.filter(n => n.label !== "__logo__").map((item: any) => (
@@ -68,13 +70,13 @@ export default function SharedHeader({ cms }: { cms?: any }) {
                 </button>
               ))}
               <button type="button" onClick={() => setMenuOpen(false)} className="mt-1 py-2 text-[#5d0f0f]/40 text-[14px] cursor-pointer">
-                Stäng
+                ✕
               </button>
             </div>
             <div className="hidden md:flex items-center gap-[20px] h-[70px] px-[25px]">
               {allNavItems.map((item: any) =>
                 item.label === "__logo__" ? (
-                  <button key="logo" type="button" onClick={() => goTo("#")} className="cursor-pointer shrink-0 px-[16px] flex items-center justify-center">
+                  <button key="logo" type="button" onClick={() => goTo("/")} className="cursor-pointer shrink-0 px-[16px] flex items-center justify-center">
                     <VroffLogo className="w-[86px] h-[25.8px] text-[#5d0f0f]" />
                   </button>
                 ) : (
@@ -91,7 +93,7 @@ export default function SharedHeader({ cms }: { cms?: any }) {
             <button type="button" onClick={() => goTo("/")} className="cursor-pointer flex items-center justify-center">
               <VroffLogo className="w-[86px] h-[25.8px] text-[#5d0f0f]" />
             </button>
-            <button type="button" onClick={() => setMenuOpen(true)} className="cursor-pointer flex items-center justify-center w-[20px] h-[10px] relative" aria-label="Öppna meny">
+            <button type="button" onClick={() => setMenuOpen(true)} className="cursor-pointer flex items-center justify-center w-[20px] h-[10px] relative" aria-label="Menu">
               <svg className="block w-full" fill="none" preserveAspectRatio="none" viewBox="0 0 20 12.5" style={{ position: "absolute", inset: "-25% 0 0 0", width: "100%", height: "auto" }}>
                 <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
                 <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
@@ -101,7 +103,6 @@ export default function SharedHeader({ cms }: { cms?: any }) {
         )}
       </div>
 
-      {/* Language switcher -- same row, right side, centered to nav height */}
       <div className="absolute right-4 md:right-6 top-0 h-[86px] flex items-center pointer-events-auto">
         <LanguageSwitcher variant="floating" />
       </div>

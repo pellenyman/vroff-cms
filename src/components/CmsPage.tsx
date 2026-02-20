@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { LangProvider } from "@/lib/lang";
 import V2PageStatic from "./V2PageStatic";
 import OnboardingModal from "./OnboardingModal";
 import PageRenderer from "./PageRenderer";
@@ -42,9 +43,11 @@ export default function CmsPage({ storySlug, language, breadcrumb }: CmsPageProp
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
-        <p className="text-[#5d0f0f] text-[20px]">Sidan hittades inte.</p>
-      </div>
+      <LangProvider lang={language ?? null}>
+        <div className="min-h-screen flex items-center justify-center bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
+          <p className="text-[#5d0f0f] text-[20px]">404</p>
+        </div>
+      </LangProvider>
     );
   }
 
@@ -52,10 +55,10 @@ export default function CmsPage({ storySlug, language, breadcrumb }: CmsPageProp
 
   if (isHome) {
     return (
-      <>
+      <LangProvider lang={language ?? null}>
         <V2PageStatic onOpenModal={() => setModalOpen(true)} cmsData={sections} />
         <OnboardingModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
-      </>
+      </LangProvider>
     );
   }
 
@@ -64,14 +67,19 @@ export default function CmsPage({ storySlug, language, breadcrumb }: CmsPageProp
 
   if (!sections) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-[40px] h-[40px] border-[3px] border-[#5d0f0f] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[#5d0f0f] text-[18px] font-medium">Laddar...</p>
+      <LangProvider lang={language ?? null}>
+        <div className="min-h-screen flex items-center justify-center bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-[40px] h-[40px] border-[3px] border-[#5d0f0f] border-t-transparent rounded-full animate-spin" />
+          </div>
         </div>
-      </div>
+      </LangProvider>
     );
   }
 
-  return <PageRenderer sections={sections} breadcrumb={breadcrumb} navCms={navCms} footerCms={footerCms} />;
+  return (
+    <LangProvider lang={language ?? null}>
+      <PageRenderer sections={sections} breadcrumb={breadcrumb} navCms={navCms} footerCms={footerCms} />
+    </LangProvider>
+  );
 }

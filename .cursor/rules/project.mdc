@@ -1,0 +1,60 @@
+---
+description: Project rules for vroff-cms (Next.js + Storyblok CMS)
+globs: ["**/*.tsx", "**/*.ts"]
+---
+
+# vroff-cms Project Rules
+
+## Architecture
+
+- **One rendering pipeline**: `CmsPage` is the single entry point for all pages.
+  - `storySlug === "home"` → renders `V2PageStatic` (interactive home page)
+  - All other slugs → renders `PageRenderer` (generic CMS page)
+- **Two route files only**: `app/page.tsx` (root `/`) and `app/[...slug]/page.tsx` (everything else).
+- **No separate page routes** for `/faq`, `/case`, `/contact` etc. The catch-all handles all of them.
+
+## CMS-First Rule
+
+- **ALL visible text MUST come from Storyblok CMS**. No hardcoded Swedish or English strings.
+- **No fallback text in components**. If CMS data is missing, the field should be empty, not a hardcoded string.
+- **Images** must be uploaded to Storyblok's asset CDN and referenced via `blok.image.filename`.
+- Local assets in `/public/assets/` are fallbacks only for when CMS images haven't been uploaded yet.
+
+## Language / i18n
+
+- **Default language**: Swedish (no URL prefix).
+- **Other languages**: Prefixed with `/{lang}/` (e.g., `/en/faq`).
+- **Language context**: Use `useLang()` hook from `@/lib/lang` to get the current language.
+- **All internal links**: Use `localizeHref(href, lang)` to add the language prefix.
+  - This applies to: nav links, CTA buttons, case links, FAQ category links, breadcrumbs, footer links.
+  - External links (http/https), anchor links (#), and mailto links are not prefixed.
+- **Storyblok API calls**: Always include `&language=${lang}` parameter when fetching content for non-default languages.
+- **Translatable fields**: All text/textarea fields in Storyblok block schemas must have `translatable: true`.
+- **URL parameters**: Use English names without special characters (`?category=allmant`, not `?kategori=Allmänt`).
+
+## Shared Components
+
+- `SharedHeader` — used by both `V2PageStatic` and `PageRenderer`. Reads nav from CMS `navigation` block.
+- `SharedFooter` — used by both. Reads columns from CMS `footer` block.
+- `LanguageSwitcher` — fetches available languages from Storyblok space API. Two variants: `floating` (header) and `footer`.
+- For subpages, `CmsPage` fetches nav/footer data from the `home` story so all pages share the same header/footer.
+
+## Storyblok Content Structure
+
+- **Home story** (`slug: home`): Contains all 11 blocks (navigation, hero, feature, testimonial, security, film_section, stepper, pricing_section, faq, case_study, footer).
+- **Subpage stories** (faq, contact, case/): Each contains their own page-specific blocks.
+- **Global data** (nav + footer): Always fetched from the `home` story for consistency across all pages.
+
+## Code Standards
+
+- No hardcoded Swedish text — not in aria-labels, not in fallbacks, not in mock data.
+- No `console.log` in production code.
+- All components are client components (`"use client"`) since we fetch CMS data client-side.
+- Use Tailwind CSS v4 for styling. No external CSS files except `globals.css`.
+- TypeScript: use `any` for CMS data types (Storyblok blocks are dynamic).
+
+## Deployment
+
+- **Vercel** auto-deploys from `main` branch on GitHub (`pellenyman/vroff-cms`).
+- **Always verify build passes locally** (`npm run build`) before pushing.
+- CMS content is fetched client-side, so content changes in Storyblok are live immediately without redeploy.
