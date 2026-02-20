@@ -253,8 +253,15 @@ export default function PageRenderer({ sections, breadcrumb, navCms, footerCms }
     <div className="w-full min-h-screen bg-[#f5efdf]" style={{ fontFamily: "'Quicksand', sans-serif" }}>
       <SharedHeader cms={navCms} />
 
+      {sections.map((blok: any, idx: number) => {
+        if (blok.component === "footer" || blok.component === "navigation") return null;
+        const Component = blockComponents[blok.component];
+        if (!Component) return null;
+        return <Component key={blok._uid} blok={blok} index={idx} />;
+      })}
+
       {breadcrumb && (
-        <div className="bg-[#f5efdf] w-full px-6 md:px-[120px] py-3 -mt-[10px]">
+        <div className="bg-[#f5efdf] w-full px-6 md:px-[120px] py-4">
           <div className="max-w-[1200px] mx-auto">
             <a href={breadcrumb.href} className="text-[#5d0f0f]/60 text-[14px] font-medium hover:text-[#5d0f0f] transition-colors cursor-pointer">
               &larr; {breadcrumb.label}
@@ -262,13 +269,6 @@ export default function PageRenderer({ sections, breadcrumb, navCms, footerCms }
           </div>
         </div>
       )}
-
-      {sections.map((blok: any, idx: number) => {
-        if (blok.component === "footer" || blok.component === "navigation") return null;
-        const Component = blockComponents[blok.component];
-        if (!Component) return null;
-        return <Component key={blok._uid} blok={blok} index={idx} />;
-      })}
 
       <SharedFooter cms={footerCms} />
     </div>

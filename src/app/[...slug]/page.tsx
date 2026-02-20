@@ -14,7 +14,7 @@ export default function CatchAllPage({ params }: { params: Promise<{ slug: strin
 
   const isCaseSingle = pathParts.length === 2 && pathParts[0] === "case";
   const bcHref = lang ? `/${lang}/case` : "/case";
-  const breadcrumb = isCaseSingle ? { label: "← Case", href: bcHref } : undefined;
+  const breadcrumb = isCaseSingle ? { label: "Case", href: bcHref } : undefined;
 
   return <CmsPage storySlug={storySlug} language={lang} breadcrumb={breadcrumb} />;
 }
