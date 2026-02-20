@@ -285,15 +285,12 @@ export default function PageRenderer({ sections, breadcrumb }: { sections: any[]
           <LanguageSwitcher variant="dark" />
         </div>
         {/* Mobile hamburger */}
-        <div className="flex items-center gap-[12px] md:hidden">
-          <LanguageSwitcher variant="dark" />
-          <button type="button" onClick={() => setNavOpen(!navOpen)} className="cursor-pointer" aria-label="Meny">
-            <svg width="20" height="12" fill="none" viewBox="0 0 20 12.5">
-              <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
-              <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
-            </svg>
-          </button>
-        </div>
+        <button type="button" onClick={() => setNavOpen(!navOpen)} className="md:hidden cursor-pointer" aria-label="Meny">
+          <svg width="20" height="12" fill="none" viewBox="0 0 20 12.5">
+            <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
+            <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
+          </svg>
+        </button>
         {/* Mobile nav dropdown */}
         {navOpen && (
           <div className="md:hidden w-full flex flex-col items-center gap-2 pt-4 pb-2">

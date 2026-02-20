@@ -140,15 +140,12 @@ function V2Header({ onOpenModal, scrolled, cms }: { onOpenModal: () => void; scr
             <button type="button" onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }} className="cursor-pointer flex items-center justify-center">
               <VroffLogo className="w-[86px] h-[25.8px] text-[#5d0f0f]" />
             </button>
-            <div className="flex items-center gap-[12px]">
-              <LanguageSwitcher variant="dark" />
-              <button type="button" onClick={() => setMenuOpen(true)} className="cursor-pointer flex items-center justify-center w-[20px] h-[10px] relative" aria-label="Öppna meny">
-                <svg className="block w-full" fill="none" preserveAspectRatio="none" viewBox="0 0 20 12.5" style={{ position: "absolute", inset: "-25% 0 0 0", width: "100%", height: "auto" }}>
-                  <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
-                  <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
-                </svg>
-              </button>
-            </div>
+            <button type="button" onClick={() => setMenuOpen(true)} className="cursor-pointer flex items-center justify-center w-[20px] h-[10px] relative" aria-label="Öppna meny">
+              <svg className="block w-full" fill="none" preserveAspectRatio="none" viewBox="0 0 20 12.5" style={{ position: "absolute", inset: "-25% 0 0 0", width: "100%", height: "auto" }}>
+                <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
+                <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
+              </svg>
+            </button>
           </>
         )}
       </div>

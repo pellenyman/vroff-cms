@@ -7,50 +7,39 @@ interface Language {
   name: string;
 }
 
-const LANG_LABELS: Record<string, string> = {
-  sv: "SV",
-  en: "EN",
-  de: "DE",
-  fr: "FR",
-  es: "ES",
-  no: "NO",
-  da: "DA",
-  fi: "FI",
+const LANG_NAMES: Record<string, string> = {
+  sv: "Svenska",
+  en: "English",
+  de: "Deutsch",
+  fr: "Français",
+  es: "Español",
+  no: "Norsk",
+  da: "Dansk",
+  fi: "Suomi",
 };
 
-const LANG_FLAGS: Record<string, string> = {
-  sv: "🇸🇪",
-  en: "🇬🇧",
-  de: "🇩🇪",
-  fr: "🇫🇷",
-  es: "🇪🇸",
-  no: "🇳🇴",
-  da: "🇩🇰",
-  fi: "🇫🇮",
-};
+function GlobeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 20 20" strokeWidth="1.4" stroke="currentColor">
+      <circle cx="10" cy="10" r="8" />
+      <path d="M2.5 10h15M10 2c2.5 3 3 5 3 8s-.5 5-3 8M10 2c-2.5 3-3 5-3 8s.5 5 3 8" />
+    </svg>
+  );
+}
 
 function getCurrentLang(): string {
   if (typeof window === "undefined") return "sv";
-  const path = window.location.pathname;
-  const first = path.split("/").filter(Boolean)[0];
+  const first = window.location.pathname.split("/").filter(Boolean)[0];
   if (first && first.length === 2 && /^[a-z]{2}$/.test(first)) return first;
   return "sv";
 }
 
 function buildLangUrl(langCode: string): string {
   if (typeof window === "undefined") return "/";
-  const path = window.location.pathname;
-  const parts = path.split("/").filter(Boolean);
-  const currentLang = getCurrentLang();
-
-  let pathWithoutLang = parts;
-  if (currentLang !== "sv" && parts[0] === currentLang) {
-    pathWithoutLang = parts.slice(1);
-  }
-
-  if (langCode === "sv") {
-    return "/" + pathWithoutLang.join("/");
-  }
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  const current = getCurrentLang();
+  const pathWithoutLang = current !== "sv" && parts[0] === current ? parts.slice(1) : parts;
+  if (langCode === "sv") return "/" + pathWithoutLang.join("/");
   return "/" + langCode + "/" + pathWithoutLang.join("/");
 }
 
@@ -62,17 +51,13 @@ export default function LanguageSwitcher({ variant = "dark" }: { variant?: "dark
 
   useEffect(() => {
     setCurrentLang(getCurrentLang());
-
     fetch(`https://api.storyblok.com/v2/cdn/spaces/me?token=${process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_API_ACCESS_TOKEN}`)
       .then(r => r.json())
       .then(d => {
         const codes: string[] = d.space?.language_codes || [];
         const langs: Language[] = [
-          { code: "sv", name: "Svenska" },
-          ...codes.map((c: string) => ({
-            code: c,
-            name: c === "en" ? "English" : c === "de" ? "Deutsch" : c === "fr" ? "Français" : c === "es" ? "Español" : c === "no" ? "Norsk" : c === "da" ? "Dansk" : c === "fi" ? "Suomi" : c.toUpperCase(),
-          })),
+          { code: "sv", name: LANG_NAMES.sv },
+          ...codes.map((c: string) => ({ code: c, name: LANG_NAMES[c] || c.toUpperCase() })),
         ];
         setLanguages(langs);
       })
@@ -80,11 +65,11 @@ export default function LanguageSwitcher({ variant = "dark" }: { variant?: "dark
   }, []);
 
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
+    const close = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
   }, []);
 
   if (languages.length < 2) return null;
@@ -101,27 +86,27 @@ export default function LanguageSwitcher({ variant = "dark" }: { variant?: "dark
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`flex items-center gap-[6px] px-[10px] py-[6px] rounded-[8px] ${textColor} ${hoverBg} transition-colors cursor-pointer text-[14px] font-semibold`}
+        className={`flex items-center gap-[5px] px-[6px] py-[4px] rounded-[6px] ${textColor} ${hoverBg} transition-colors cursor-pointer text-[13px] font-semibold`}
       >
-        <span>{LANG_FLAGS[currentLang] || ""}</span>
-        <span>{LANG_LABELS[currentLang] || currentLang.toUpperCase()}</span>
-        <svg width="10" height="6" fill="none" viewBox="0 0 10 6" className={`transition-transform ${open ? "rotate-180" : ""}`}>
-          <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <GlobeIcon className="w-[15px] h-[15px]" />
+        <span>{currentLang.toUpperCase()}</span>
+        <svg width="8" height="5" fill="none" viewBox="0 0 8 5" className={`transition-transform ${open ? "rotate-180" : ""}`}>
+          <path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
       {open && (
-        <div className={`absolute top-full right-0 mt-[4px] ${dropdownBg} rounded-[10px] border ${borderColor} shadow-lg min-w-[140px] py-[4px] z-50`}>
+        <div className={`absolute top-full right-0 mt-[2px] ${dropdownBg} rounded-[8px] border ${borderColor} shadow-lg min-w-[130px] py-[3px] z-50`}>
           {languages.map((lang) => (
             <a
               key={lang.code}
               href={buildLangUrl(lang.code)}
-              className={`flex items-center gap-[8px] px-[14px] py-[8px] ${textColor} text-[14px] font-medium ${hoverBg} transition-colors ${
+              className={`flex items-center gap-[8px] px-[12px] py-[7px] ${textColor} text-[13px] font-medium ${hoverBg} transition-colors ${
                 lang.code === currentLang ? activeBg : ""
               }`}
               onClick={() => setOpen(false)}
             >
-              <span>{LANG_FLAGS[lang.code] || ""}</span>
+              <span className="w-[18px] text-center font-semibold opacity-60">{lang.code.toUpperCase()}</span>
               <span>{lang.name}</span>
             </a>
           ))}
