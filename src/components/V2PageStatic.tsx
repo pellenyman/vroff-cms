@@ -7,6 +7,16 @@ import PricingComparison from "./PricingComparison";
 import SharedHeader from "./SharedHeader";
 import SharedFooter from "./SharedFooter";
 import { useLang, localizeHref } from "@/lib/lang";
+import { render } from "storyblok-rich-text-react-renderer";
+
+function RichText({ content, className }: { content: any; className?: string }) {
+  if (!content) return null;
+  if (typeof content === "string") return <p className={className}>{content}</p>;
+  if (typeof content === "object" && content.type === "doc") {
+    return <div className={className}>{render(content)}</div>;
+  }
+  return <p className={className}>{String(content)}</p>;
+}
 
 const BASE = "";
 const imgHero = `${BASE}/assets/a4d848fc8e2e4a83a5179b20fc12c3245deb2b64.png`;
@@ -83,9 +93,7 @@ function V2Hero({ onOpenModal, cms }: { onOpenModal: () => void; cms: any }) {
         <h1 className="text-[#fafafa] text-[40px] md:text-[76px] font-semibold leading-[1.01] tracking-[-2px] md:tracking-[-3.8px] max-w-[759px]">
           {cms?.headline}
         </h1>
-        <p className="text-white text-[16px] md:text-[20px] max-w-[600px]">
-          {cms?.subtext}
-        </p>
+        <RichText content={cms?.subtext} className="text-white text-[16px] md:text-[20px] max-w-[600px] [&_p]:mb-2" />
         <button type="button" onClick={onOpenModal} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] cursor-pointer hover:bg-[#5664e2] transition-colors">
           {cms?.cta_text}
         </button>
@@ -133,7 +141,7 @@ function V2Features({ cms }: { cms: any }) {
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[65px]">
         <div>
           <h2 className="text-[#5d0f0f] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
-          <p className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px]">{cms?.description}</p>
+          <RichText content={cms?.description} className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px] [&_p]:mb-2" />
         </div>
 
         <div className="overflow-hidden cursor-grab active:cursor-grabbing"
@@ -147,7 +155,7 @@ function V2Features({ cms }: { cms: any }) {
                 </div>
                 <div className="pt-[30px] pr-[40px] md:pr-[120px]">
                   <h3 className="text-[#5d0f0f] text-[24px] md:text-[32px] font-semibold tracking-[-0.64px]">{f.title}</h3>
-                  <p className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4">{f.desc}</p>
+                  <RichText content={f.desc} className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4 [&_p]:mb-2" />
                 </div>
               </div>
             ))}
@@ -210,7 +218,7 @@ function V2Testimonials({ cms }: { cms: any }) {
           <div ref={trackRef} className="flex gap-[40px] transition-transform duration-500 ease-out select-none" style={{ transform: `translateX(${-slide * step}px)` }}>
             {tItems.map((t: any, i: number) => (
               <div key={i} onClick={() => setSlide(Math.max(0, Math.min(maxSlide, i)))} className={`shrink-0 w-[calc(100vw-48px)] md:w-[330px] bg-[#e8eaff] rounded-[10px] p-[35px] flex flex-col gap-[23px] justify-between transition-opacity duration-300 cursor-pointer ${i === slide ? "opacity-100" : "opacity-50"}`}>
-                <p className="text-[#5d0f0f] text-[20px] font-medium leading-[1.5] flex-1">{t.quote}</p>
+                <RichText content={t.quote} className="text-[#5d0f0f] text-[20px] font-medium leading-[1.5] flex-1 [&_p]:mb-0" />
                 <div className="flex items-center gap-[16px]">
                   <img src={t.image} alt={t.name} className="w-[48px] h-[48px] rounded-full object-cover" />
                   <div>
@@ -248,7 +256,7 @@ function V2Security({ cms }: { cms: any }) {
       <div className="max-w-[1200px] mx-auto flex flex-col gap-[50px]">
         <div>
           <h2 className="text-[#ac4324] text-[36px] md:text-[56px] font-semibold tracking-[-2.24px]">{cms?.headline}</h2>
-          <p className="text-[#c15333] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px]">{cms?.description}</p>
+          <RichText content={cms?.description} className="text-[#c15333] text-[16px] font-medium leading-[1.5] mt-4 max-w-[672px] [&_p]:mb-2" />
         </div>
         <div className="flex flex-col md:flex-row gap-[30px]">
           {sItems.map((s: any, i: number) => (
@@ -258,7 +266,7 @@ function V2Security({ cms }: { cms: any }) {
               </div>
               <div>
                 <p className="text-[#fafafa] text-[18px] font-semibold">{s.title}</p>
-                <p className="text-[#c15333] text-[18px] font-medium leading-[1.5] mt-1">{s.desc}</p>
+                <RichText content={s.desc} className="text-[#c15333] text-[18px] font-medium leading-[1.5] mt-1 [&_p]:mb-0" />
               </div>
             </div>
           ))}
@@ -423,7 +431,7 @@ function V2GetStarted({ cms }: { cms: any }) {
                 <span className="text-white text-[16px] font-bold">{activeStep + 1}</span>
               </div>
               <h3 className="text-white text-[24px] md:text-[32px] font-semibold tracking-[-0.64px] animate-[slideInRight_0.35s_ease-out]">{stepsData[activeStep].mockTitle}</h3>
-              <p className="text-[#e0d1b4] text-[16px] md:text-[18px] font-medium leading-[1.5] max-w-[500px] animate-[slideInRight_0.35s_ease-out]">{stepsData[activeStep].mockContent}</p>
+              <RichText content={stepsData[activeStep].mockContent} className="text-[#e0d1b4] text-[16px] md:text-[18px] font-medium leading-[1.5] max-w-[500px] animate-[slideInRight_0.35s_ease-out] [&_p]:mb-0" />
 
               {activeStep === 0 && (
                 <div className="flex flex-wrap gap-3 mt-4 animate-[slideInRight_0.4s_ease-out]">
@@ -576,7 +584,7 @@ function V2Pricing({ onOpenModal, cms }: { onOpenModal: () => void; cms: any }) 
                   <p className="text-[#5d0f0f] text-[22px] font-semibold tracking-[-0.44px]">{p.price}</p>
                   <p className="text-[#5d0f0f]/60 text-[14px] font-medium leading-[1.4]">{p.priceSub}</p>
                 </div>
-                <p className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4">{p.desc}</p>
+                <RichText content={p.desc} className="text-[#5d0f0f] text-[16px] font-medium leading-[1.5] mt-4 [&_p]:mb-0" />
                 <button type="button" onClick={(e) => { e.stopPropagation(); onOpenModal(); }}
                   className={`mt-6 font-semibold text-[16px] rounded-[10px] h-[40px] w-full flex items-center justify-center cursor-pointer transition-colors ${
                     selected === i
@@ -641,7 +649,7 @@ function V2FAQ({ cms }: { cms: any }) {
   );
 }
 
-function FAQItemV2({ q, a, isOpen, onClick, isLast }: { q: string; a: string; isOpen: boolean; onClick: () => void; isLast?: boolean }) {
+function FAQItemV2({ q, a, isOpen, onClick, isLast }: { q: string; a: any; isOpen: boolean; onClick: () => void; isLast?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [h, setH] = useState(0);
   useEffect(() => { if (ref.current) setH(isOpen ? ref.current.scrollHeight : 0); }, [isOpen]);
@@ -656,7 +664,7 @@ function FAQItemV2({ q, a, isOpen, onClick, isLast }: { q: string; a: string; is
       </button>
       <div className="overflow-hidden transition-[max-height,opacity] duration-400" style={{ maxHeight: h, opacity: isOpen ? 1 : 0 }}>
         <div ref={ref} className="pb-[20px] pl-[20px] pr-[60px] md:pr-[200px]">
-          <p className="text-[#9b3316] text-[16px] md:text-[20px] font-medium leading-[1.5]">{a}</p>
+          <RichText content={a} className="text-[#9b3316] text-[16px] md:text-[20px] font-medium leading-[1.5] [&_p]:mb-2" />
         </div>
       </div>
     </div>
@@ -717,7 +725,7 @@ function V2Cases({ cms }: { cms: any }) {
                   <div className="flex flex-col justify-between md:order-1 gap-[20px]">
                     <div>
                       <h3 className="text-[#5d0f0f] text-[32px] md:text-[60px] font-semibold leading-[0.9] tracking-[-2px] md:tracking-[-3px] whitespace-pre-wrap">{c.title}</h3>
-                      <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5] mt-4 md:mt-6 max-w-[321px]">{c.desc}</p>
+                      <RichText content={c.desc} className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5] mt-4 md:mt-6 max-w-[321px] [&_p]:mb-0" />
                     </div>
                     <a href={localizeHref(`/case/${c.slug}`, lang)} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[30px] py-[12px] rounded-[15px] w-[155px] text-center cursor-pointer hover:bg-[#5664e2] transition-colors">{c.buttonText}</a>
                   </div>

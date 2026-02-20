@@ -90,7 +90,7 @@ function CtaSection({ blok }: { blok: any }) {
     <section className="bg-[#b4bbfd] w-full py-[80px] px-6 md:px-[120px]">
       <div className="max-w-[800px] mx-auto text-center flex flex-col items-center gap-[20px]">
         <h2 className="text-[#5d0f0f] text-[28px] md:text-[44px] font-semibold tracking-[-1.5px]">{blok.headline}</h2>
-        {blok.description && <p className="text-[#5d0f0f] text-[16px] md:text-[20px] font-medium">{blok.description}</p>}
+        {blok.description && <RichText content={blok.description} className="text-[#5d0f0f] text-[16px] md:text-[20px] font-medium [&_p]:mb-2" />}
         {blok.cta_text && (
           <a href={localizeHref(blok.cta_link?.cached_url || "/contact", lang)} className="bg-[#6674f2] text-[#fafafa] font-semibold px-[30px] py-[12px] rounded-[20px] text-[16px] hover:bg-[#5664e2] transition-colors">{blok.cta_text}</a>
         )}
@@ -200,7 +200,7 @@ function CaseStudySection({ blok }: { blok: any }) {
                 <img src={c.image?.filename || imgCase} alt={c.name} className="w-full h-full object-cover" />
               </div>
               <h3 className="text-[#5d0f0f] text-[20px] md:text-[24px] font-semibold whitespace-pre-wrap">{c.title}</h3>
-              <p className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5]">{c.description}</p>
+              <RichText content={c.description} className="text-[#5d0f0f] text-[14px] md:text-[16px] font-medium leading-[1.5] [&_p]:mb-0" />
               <a href={localizeHref(c.link?.cached_url || `/case/${c.slug || c.name?.toLowerCase()}`, lang)} className="bg-[#6674f2] text-[#d7dbfe] font-semibold text-[14px] px-[24px] py-[10px] rounded-[15px] w-fit hover:bg-[#5664e2] transition-colors">{c.button_text}</a>
             </div>
           ))}
@@ -217,7 +217,7 @@ function ContactFormSection({ blok }: { blok: any }) {
     <section className="bg-[#fafafa] w-full py-[60px] md:py-[80px] px-6 md:px-[120px]">
       <div className="max-w-[600px] mx-auto flex flex-col gap-[24px] md:gap-[30px]">
         {blok.headline && <h2 className="text-[#5d0f0f] text-[24px] md:text-[36px] font-semibold tracking-[-0.5px] md:tracking-[-1px]">{blok.headline}</h2>}
-        {blok.description && <p className="text-[#5d0f0f] text-[16px] font-medium">{blok.description}</p>}
+        {blok.description && <RichText content={blok.description} className="text-[#5d0f0f] text-[16px] font-medium [&_p]:mb-2" />}
         {submitted ? (
           <div className="bg-[#e6e8fc] rounded-[10px] p-[40px] text-center">
             <p className="text-[#5d0f0f] text-[20px] font-semibold">Tack för ditt meddelande!</p>
