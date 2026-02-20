@@ -78,9 +78,11 @@ function slugify(str: string): string {
 
 function FaqSection({ blok }: { blok: any }) {
   const allItems = blok.items || [];
-  const categoryNames = ["Alla", ...Array.from(new Set(allItems.map((f: any) => f.category).filter(Boolean))) as string[]];
+  const allLabel = blok.all_label || "Alla";
+  const countSuffix = blok.count_suffix || "frågor";
+  const categoryNames = [allLabel, ...Array.from(new Set(allItems.map((f: any) => f.category).filter(Boolean))) as string[]];
 
-  const [active, setActive] = useState("Alla");
+  const [active, setActive] = useState(allLabel);
   const [open, setOpen] = useState(0);
 
   useEffect(() => {
@@ -96,12 +98,12 @@ function FaqSection({ blok }: { blok: any }) {
     setActive(cat);
     setOpen(0);
     const url = new URL(window.location.href);
-    if (cat === "Alla") { url.searchParams.delete("category"); }
+    if (cat === allLabel) { url.searchParams.delete("category"); }
     else { url.searchParams.set("category", slugify(cat)); }
     window.history.pushState({}, "", url.toString());
   };
 
-  const items = active === "Alla" ? allItems : allItems.filter((f: any) => f.category === active);
+  const items = active === allLabel ? allItems : allItems.filter((f: any) => f.category === active);
 
   return (
     <section id="faq" className="bg-[#fafafa] w-full py-[60px] md:py-[80px] px-6 md:px-[120px]">
@@ -111,7 +113,7 @@ function FaqSection({ blok }: { blok: any }) {
         {categoryNames.length > 1 && (
           <div className="flex flex-wrap gap-[8px] md:gap-[12px]">
             {categoryNames.map((cat: string) => (
-              <a key={cat} href={cat === "Alla" ? "/faq" : `/faq?category=${slugify(cat)}`}
+              <a key={cat} href={cat === allLabel ? "/faq" : `/faq?category=${slugify(cat)}`}
                 onClick={(e) => { e.preventDefault(); selectCategory(cat); }}
                 className={`px-[16px] md:px-[20px] py-[8px] rounded-[50px] text-[13px] md:text-[14px] font-semibold cursor-pointer transition-colors ${
                   active === cat ? "bg-[#5d0f0f] text-[#fafafa]" : "bg-white text-[#5d0f0f] hover:bg-[#5d0f0f]/10"
@@ -120,7 +122,7 @@ function FaqSection({ blok }: { blok: any }) {
           </div>
         )}
 
-        <p className="text-[#5d0f0f]/50 text-[14px] font-medium">{items.length} frågor{active !== "Alla" ? ` i "${active}"` : ""}</p>
+        <p className="text-[#5d0f0f]/50 text-[14px] font-medium">{items.length} {countSuffix}{active !== allLabel ? ` i "${active}"` : ""}</p>
 
         {/* FAQ items */}
         <div className="flex flex-col">
