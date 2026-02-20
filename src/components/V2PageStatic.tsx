@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import svgPaths from "../svg-9z9wiml24b";
 import { PlusIcon, PlusSmallIcon } from "./Icons";
 import PricingComparison from "./PricingComparison";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const BASE = "";
 const imgHero = `${BASE}/assets/a4d848fc8e2e4a83a5179b20fc12c3245deb2b64.png`;
@@ -113,6 +114,7 @@ function V2Header({ onOpenModal, scrolled, cms }: { onOpenModal: () => void; scr
                   {item.label}
                 </button>
               ))}
+              <div className="mt-2"><LanguageSwitcher variant="dark" /></div>
               <button type="button" onClick={() => setMenuOpen(false)} className="mt-1 py-2 text-[#5d0f0f]/40 text-[14px] cursor-pointer">
                 Stäng
               </button>
@@ -130,6 +132,7 @@ function V2Header({ onOpenModal, scrolled, cms }: { onOpenModal: () => void; scr
                   </button>
                 )
               )}
+              <LanguageSwitcher variant="dark" />
             </div>
           </>
         ) : (
@@ -137,12 +140,15 @@ function V2Header({ onOpenModal, scrolled, cms }: { onOpenModal: () => void; scr
             <button type="button" onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }} className="cursor-pointer flex items-center justify-center">
               <VroffLogo className="w-[86px] h-[25.8px] text-[#5d0f0f]" />
             </button>
-            <button type="button" onClick={() => setMenuOpen(true)} className="cursor-pointer flex items-center justify-center w-[20px] h-[10px] relative" aria-label="Öppna meny">
-              <svg className="block w-full" fill="none" preserveAspectRatio="none" viewBox="0 0 20 12.5" style={{ position: "absolute", inset: "-25% 0 0 0", width: "100%", height: "auto" }}>
-                <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
-                <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-[12px]">
+              <LanguageSwitcher variant="dark" />
+              <button type="button" onClick={() => setMenuOpen(true)} className="cursor-pointer flex items-center justify-center w-[20px] h-[10px] relative" aria-label="Öppna meny">
+                <svg className="block w-full" fill="none" preserveAspectRatio="none" viewBox="0 0 20 12.5" style={{ position: "absolute", inset: "-25% 0 0 0", width: "100%", height: "auto" }}>
+                  <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
+                  <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
+                </svg>
+              </button>
+            </div>
           </>
         )}
       </div>
@@ -836,8 +842,9 @@ function V2Footer({ cms }: { cms: any }) {
             ))}
           </div>
         )}
-        <div className="pt-[46px] border-t border-[#b4bbfd]/40">
+        <div className="pt-[46px] border-t border-[#b4bbfd]/40 flex items-center justify-between">
           <VroffLogoLarge className="w-[160px] h-[48px] text-[#6674f2]" />
+          <LanguageSwitcher variant="light" />
         </div>
       </div>
     </footer>

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import svgPaths from "../svg-9z9wiml24b";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const imgAvatar = "/assets/283a376b0fafb9874fefe43652d98fad3cdad31c.png";
 const imgCase = "/assets/4dc6e4130302c1fff2514ea9247cc5842789902a.png";
@@ -232,7 +233,7 @@ function FooterSection() {
             </div>
           ))}
         </div>
-        <div className="pt-[46px] border-t border-[#b4bbfd]/40">
+        <div className="pt-[46px] border-t border-[#b4bbfd]/40 flex items-center justify-between">
           <svg className="w-[160px] h-[48px] text-[#6674f2]" fill="none" viewBox="0 0 1200 360">
             <path d={svgPaths.p28c08800} fill="currentColor" />
             <path d={svgPaths.p1b850880} fill="currentColor" />
@@ -240,6 +241,7 @@ function FooterSection() {
             <path d={svgPaths.p1934e700} fill="currentColor" />
             <path d={svgPaths.p2b9be440} fill="currentColor" />
           </svg>
+          <LanguageSwitcher variant="light" />
         </div>
       </div>
     </footer>
@@ -280,14 +282,18 @@ export default function PageRenderer({ sections, breadcrumb }: { sections: any[]
           <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Frågor</a>
           <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kundcase</a>
           <a href="/contact" className="text-[#5d0f0f] text-[16px] font-semibold hover:opacity-70 transition-opacity">Kontakt</a>
+          <LanguageSwitcher variant="dark" />
         </div>
         {/* Mobile hamburger */}
-        <button type="button" onClick={() => setNavOpen(!navOpen)} className="md:hidden cursor-pointer" aria-label="Meny">
-          <svg width="20" height="12" fill="none" viewBox="0 0 20 12.5">
-            <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
-            <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
-          </svg>
-        </button>
+        <div className="flex items-center gap-[12px] md:hidden">
+          <LanguageSwitcher variant="dark" />
+          <button type="button" onClick={() => setNavOpen(!navOpen)} className="cursor-pointer" aria-label="Meny">
+            <svg width="20" height="12" fill="none" viewBox="0 0 20 12.5">
+              <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="1.25" y2="1.25" />
+              <line stroke="#5D0F0F" strokeLinecap="round" strokeWidth="2.5" x1="1.25" x2="18.75" y1="11.25" y2="11.25" />
+            </svg>
+          </button>
+        </div>
         {/* Mobile nav dropdown */}
         {navOpen && (
           <div className="md:hidden w-full flex flex-col items-center gap-2 pt-4 pb-2">
@@ -295,6 +301,7 @@ export default function PageRenderer({ sections, breadcrumb }: { sections: any[]
             <a href="/faq" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Frågor</a>
             <a href="/case" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kundcase</a>
             <a href="/contact" className="text-[#5d0f0f] text-[16px] font-semibold py-2">Kontakt</a>
+            <LanguageSwitcher variant="dark" />
           </div>
         )}
       </nav>
