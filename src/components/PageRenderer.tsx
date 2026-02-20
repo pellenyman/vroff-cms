@@ -223,7 +223,6 @@ const blockComponents: Record<string, React.FC<{ blok: any }>> = {
   faq: FaqSection,
   case_study: CaseStudySection,
   contact_form: ContactFormSection,
-  footer: ({ blok }) => <FooterSection />,
 };
 
 export default function PageRenderer({ sections, breadcrumb, navCms, footerCms }: { sections: any[]; breadcrumb?: { label: string; href: string }; navCms?: any; footerCms?: any }) {
